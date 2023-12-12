@@ -1,5 +1,5 @@
 #
-# python step_1_1_0.py
+# python step_2_0.py
 #
 import math
 
@@ -12,25 +12,27 @@ ratings = [0, 2000, 2000]
 K = 32
 
 
-# Rating calculate
-def get_x_by_y(y):
-    if y==0:
+# １勝するために必要な対局数（暗記表の x ）を取得
+def get_games_by_rating_difference(
+        rating_difference): # 暗記表の y
+    if rating_difference==0:
         return 1
     else:
-        return 400 * math.log10(y)
+        return 400 * math.log10(rating_difference)
 
 
-# Rating calculate
-def get_y_by_x(x):
-    return x ** (x / 400)
+# レーティング差（暗記表の y ）を取得
+def get_rating_difference_by_games(
+        games): # 暗記表の x : 実数
+    return math.floor(10 ** (games / 400))
 
 
-# Win rate
+# Win rate : 実数
 def get_win_rate_for_upper_rating(win_games):
     return win_games / (win_games + 1)
 
 
-# Win rate
+# Win rate : 実数
 def get_win_rate_for_lower_rating(win_games):
     return 1 / (win_games + 1)
 
@@ -40,34 +42,53 @@ if __name__ == "__main__":
     def on_result_1(result):
 
 
-        # レーティング差
-        ab = ratings[1] - ratings[2]
-        ba = ratings[2] - ratings[1]
-        y = abs(ba)
-        print(f"y: {y}")
-        x = get_x_by_y(y)
+        # a から見た b とのレーティング差
+        difference_a_to_b = ratings[2] - ratings[1]
+        print(f"a から見た b とのレーティング差: {difference_a_to_b}")
 
+        # b から見た a とのレーティング差
+        difference_b_to_a = ratings[1] - ratings[2]
+        print(f"b から見た a とのレーティング差: {difference_b_to_a}")
 
-        # 勝率
-        win_rate_for_lower_rating = 1 / (x+1)
-        #win_rate_for_upper_rating = x / (x+1)
+        # a から見た b に１勝するために必要な対局数
+        games_a_to_b = get_games_by_rating_difference(difference_a_to_b)
+        print(f"a から見た b に１勝するために必要な対局数: {games_a_to_b}")
 
+        # b から見た a に１勝するために必要な対局数
+        games_b_to_a = get_games_by_rating_difference(difference_b_to_a)
+        print(f"b から見た a に１勝するために必要な対局数: {games_b_to_a}")
 
+        # a から見た b への勝率
+        if 0 <= difference_a_to_b:
+            Wab = get_win_rate_for_upper_rating(games_a_to_b)
+        else:
+            Wab = get_win_rate_for_lower_rating(games_a_to_b)
+
+        # b から見た a への勝率
+        if 0 <= difference_b_to_a:
+            Wba = get_win_rate_for_upper_rating(games_b_to_a)
+        else:
+            Wba = get_win_rate_for_lower_rating(games_b_to_a)
+
+        print(f"Wab: {Wab}, Wba: {Wba}")
+
+        # レーティングは動きません
         if result == 0:
-            # レーティングは動きません
             print(f"aiko  >  ratings A {ratings[1]}, B {ratings[2]}")
 
+        # A が勝った
         elif result == 1:
-            offset = K * win_rate_for_lower_rating
+            offset = math.floor(K * Wba)
             ratings[1] += offset
             ratings[2] -= offset
-            print(f"A win  >  ratings A {ratings[1]}, B {ratings[2]}")
+            print(f"A win  >  offset {offset},  ratings A {ratings[1]}, B {ratings[2]}")
 
+        # B が勝った
         elif result == 2:
-            offset = K * win_rate_for_lower_rating
+            offset = math.floor(K * Wab)
             ratings[2] += offset
             ratings[1] -= offset
-            print(f"B win  >  ratings A {ratings[1]}, B {ratings[2]}")
+            print(f"B win  >  offset {offset}, ratings A {ratings[1]}, B {ratings[2]}")
 
         else:
             print("Error")
