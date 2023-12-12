@@ -122,7 +122,7 @@ if __name__ == "__main__":
               """)
 
         # ファイルへ保存
-        with open('data/step_2_0.csv', mode='w') as f:
+        with open('data_output/step_2_0.csv', mode='w') as f:
 
             # 集計
             f.write(f"""\

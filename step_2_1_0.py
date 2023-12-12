@@ -171,7 +171,7 @@ if __name__ == "__main__":
               """)
 
         # ファイルへ保存
-        with open('data/step_2_1_0.csv', mode='w') as f:
+        with open('data_output/step_2_1_0.csv', mode='w') as f:
 
             f.write(f"""\
 player_1_name, player_1_rating_before_game, player_2_name, player_2_rating_before_game, win_player, moving_rating
