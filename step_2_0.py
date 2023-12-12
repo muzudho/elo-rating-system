@@ -53,62 +53,106 @@ if __name__ == "__main__":
 
     def on_result_1(result):
 
-
-        # a から見た b とのレーティング差
-        difference_a_to_b = ratings[2] - ratings[1]
-        print(f"a から見た b とのレーティング差: {difference_a_to_b}")
-
-        # b から見た a とのレーティング差
-        difference_b_to_a = ratings[1] - ratings[2]
-        print(f"b から見た a とのレーティング差: {difference_b_to_a}")
-
-        # a から見た b に１勝するために必要な対局数
-        games_a_to_b = get_games_by_rating_difference(difference_a_to_b)
-        print(f"a から見た b に１勝するために必要な対局数: {games_a_to_b}")
-
-        # b から見た a に１勝するために必要な対局数
-        games_b_to_a = get_games_by_rating_difference(difference_b_to_a)
-        print(f"b から見た a に１勝するために必要な対局数: {games_b_to_a}")
-
-        # a から見た b への勝率
-        if 0 <= difference_a_to_b:
-            Wab = get_win_rate_for_upper_rating(games_a_to_b)
-        else:
-            Wab = get_win_rate_for_lower_rating(games_a_to_b)
-
-        # b から見た a への勝率
-        if 0 <= difference_b_to_a:
-            Wba = get_win_rate_for_upper_rating(games_b_to_a)
-        else:
-            Wba = get_win_rate_for_lower_rating(games_b_to_a)
-
-        print(f"Wab: {Wab}, Wba: {Wba}")
-
-        # レーティングは動きません
+        # あいこ
         if result == 0:
-            print(f"aiko  >  ratings A {ratings[1]}, B {ratings[2]}")
+            print("""\
++------+
+| aiko |
++------+\
+                  """)
+            # レーティングは動きません
+            print(f"* ratings: A {ratings[1]}, B {ratings[2]}")
 
         # A が勝った
         elif result == 1:
+            print("""\
++-------+
+| A win |
++-------+\
+                  """)
+            
+            # b から見た a とのレーティング差
+            difference_b_to_a = ratings[1] - ratings[2]
+            print(f"* b から見た a とのレーティング差: {difference_b_to_a}")
+
+            # b から見た a に１勝するために必要な対局数
+            games_b_to_a = get_games_by_rating_difference(difference_b_to_a)
+            print(f"* b から見た a に１勝するために必要な対局数: {games_b_to_a}")
+
+            # b から見た a への勝率
+            if 0 <= difference_b_to_a:
+                Wba = get_win_rate_for_upper_rating(games_b_to_a)
+            else:
+                Wba = get_win_rate_for_lower_rating(games_b_to_a)
+
+            print(f"* b から見た a への勝率(Wba): {Wba}")
+
             offset = math.floor(K * Wba)
             ratings[1] += offset
             ratings[2] -= offset
-            print(f"A win  >  offset {offset},  ratings A {ratings[1]}, B {ratings[2]}")
+            print(f"* K: {K},  offset: {offset},  ratings: A {ratings[1]}, B {ratings[2]}")
 
         # B が勝った
         elif result == 2:
+            print("""\
++-------+
+| B win |
++-------+\
+                  """)
+
+            # a から見た b とのレーティング差
+            difference_a_to_b = ratings[2] - ratings[1]
+            print(f"* a から見た b とのレーティング差: {difference_a_to_b}")
+
+            # a から見た b に１勝するために必要な対局数
+            games_a_to_b = get_games_by_rating_difference(difference_a_to_b)
+            print(f"* a から見た b に１勝するために必要な対局数: {games_a_to_b}")
+
+            # a から見た b への勝率
+            if 0 <= difference_a_to_b:
+                Wab = get_win_rate_for_upper_rating(games_a_to_b)
+            else:
+                Wab = get_win_rate_for_lower_rating(games_a_to_b)
+
+            print(f"* a から見た b への勝率(Wab): {Wab}")
+
             offset = math.floor(K * Wab)
             ratings[2] += offset
             ratings[1] -= offset
-            print(f"B win  >  offset {offset}, ratings A {ratings[1]}, B {ratings[2]}")
+            print(f"* K: {K},  offset: {offset},  ratings: A {ratings[1]}, B {ratings[2]}")
 
         else:
             print("Error")
 
 
     def on_end_1():
-        print(f"games:   aiko: {games[0]}, A win: {games[1]}, B win: {games[2]}")
-        print(f"ratings: aiko: {ratings[0]}, A win: {ratings[1]}, B win: {ratings[2]}")
+        print(f"""\
++--------+
+| result |
++--------+
+* games:    aiko: {games[0]:4},  A win: {games[1]:4},  B win: {games[2]:4}
+* ratings:  aiko: {ratings[0]:4},  A win: {ratings[1]:4},  B win: {ratings[2]:4}\
+              """)
+
+        # ファイルへ保存
+        with open('data/step_2_0.csv', mode='w') as f:
+            f.write(f"""\
+player,  win, rating
+------, ----, ------
+  aiko, {games[0]:4}, {ratings[0]:6}
+     A, {games[1]:4}, {ratings[1]:6}
+     B, {games[2]:4}, {ratings[2]:6}
+""")
+
+
+    print("""\
++-------+
+| start |
++-------+\
+          """)
+    
+    # レーティングは動きません
+    print(f"* ratings: A {ratings[1]}, B {ratings[2]}")
 
 
     main(on_gyanken=on_gyanken_1,

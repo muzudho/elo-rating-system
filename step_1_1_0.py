@@ -3,6 +3,7 @@
 #
 import random
 
+# あいこの数, Aの勝利数, Bの勝利数
 games = [0,0,0]
 
 
