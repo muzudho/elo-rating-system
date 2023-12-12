@@ -4,7 +4,9 @@
 import math
 
 from step_1_1_0 import on_gyanken_1, games, main
-from step_2_0 import ratings, K, get_games_by_rating_difference, get_rating_difference_by_games, get_win_rate_for_upper_rating, get_win_rate_for_lower_rating
+from step_2_0 import ratings, K, get_games_by_rating_difference, get_rating_difference_by_games,\
+      get_win_rate_for_upper_rating, get_win_rate_for_lower_rating,calculate_moving_rating_that_a_wins,\
+        calculate_moving_rating_that_b_wins
 
 
 # 対局の記録
@@ -55,42 +57,6 @@ class GameRecord():
         return self._moving_rating_after_game
 
 
-# A が勝った時のレーティングの移動量
-def calculate_moving_rating_that_a_wins():
-    # b から見た a とのレーティング差
-    difference_b_to_a = ratings[1] - ratings[2]
-
-    # b から見た a に１勝するために必要な対局数
-    games_b_to_a = get_games_by_rating_difference(difference_b_to_a)
-
-    # b から見た a への勝率
-    if 0 <= difference_b_to_a:
-        Wba = get_win_rate_for_upper_rating(games_b_to_a)
-    else:
-        Wba = get_win_rate_for_lower_rating(games_b_to_a)
-
-    # レーティングの変動
-    return math.floor(K * Wba)
-
-
-# B が勝った時のレーティングの移動量
-def calculate_moving_rating_that_b_wins():
-    # a から見た b とのレーティング差
-    difference_a_to_b = ratings[2] - ratings[1]
-
-    # a から見た b に１勝するために必要な対局数
-    games_a_to_b = get_games_by_rating_difference(difference_a_to_b)
-
-    # a から見た b への勝率
-    if 0 <= difference_a_to_b:
-        Wab = get_win_rate_for_upper_rating(games_a_to_b)
-    else:
-        Wab = get_win_rate_for_lower_rating(games_a_to_b)
-
-    # レーティングの変動
-    return math.floor(K * Wab)
-
-
 if __name__ == "__main__":
 
     def on_result_1(result):
@@ -116,7 +82,7 @@ if __name__ == "__main__":
         # A が勝った
         elif result == 1:
             # レーティングの変動
-            moving_rating = calculate_moving_rating_that_a_wins()
+            result_2 = calculate_moving_rating_that_a_wins()
 
             game_records.append(GameRecord(
                 player_name_1="A",
@@ -124,10 +90,10 @@ if __name__ == "__main__":
                 win_player=1,
                 player_1_rating_before_game=ratings[1],
                 player_2_rating_before_game=ratings[2],
-                moving_rating_after_game=moving_rating))
+                moving_rating_after_game=result_2["moving_rating"]))
 
-            ratings[1] += moving_rating
-            ratings[2] -= moving_rating
+            ratings[1] += result_2["moving_rating"]
+            ratings[2] -= result_2["moving_rating"]
             print(f"""\
 +-------+
 | A win |
@@ -138,7 +104,7 @@ if __name__ == "__main__":
         # B が勝った
         elif result == 2:
             # レーティングの変動
-            moving_rating = calculate_moving_rating_that_b_wins()
+            result_2 = calculate_moving_rating_that_b_wins()
 
             game_records.append(GameRecord(
                 player_name_1="A",
@@ -146,10 +112,10 @@ if __name__ == "__main__":
                 win_player=2,
                 player_1_rating_before_game=ratings[1],
                 player_2_rating_before_game=ratings[2],
-                moving_rating_after_game=moving_rating))
+                moving_rating_after_game=result_2["moving_rating"]))
 
-            ratings[2] += moving_rating
-            ratings[1] -= moving_rating
+            ratings[2] += result_2["moving_rating"]
+            ratings[1] -= result_2["moving_rating"]
             print(f"""\
 +-------+
 | B win |
