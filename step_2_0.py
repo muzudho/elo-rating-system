@@ -16,27 +16,14 @@ K = 32
 # 実数でも算出できるが、（1.0 以上の数になるよう数式を調整している前提で）整数にして返す
 def get_games_by_rating_difference(
         rating_difference): # 暗記表の y
-    
-    # ゼロなら
-    if rating_difference==0:
-        return 1
-    
-    # 負数なら
-    elif rating_difference <0:
-        # 負数を指定できないので、符号をひっくり返して、あとで戻す
-        return -math.floor(400 * math.log10(-rating_difference))
-        # マイナス符号の付ける位置で結果が変わってくるので注意
-        #return math.floor(-400 * math.log10(-rating_difference))
-
-    # 正の数なら
-    else:
-        return math.floor(400 * math.log10(rating_difference))
+    return math.floor(10 ** (rating_difference / 400))
 
 
 # レーティング差（暗記表の y ）を取得
 def get_rating_difference_by_games(
         games): # 暗記表の x : 実数
-    return math.floor(10 ** (games / 400))
+    #return math.floor(10 ** (games / 400))
+    return math.floor(400 * math.log10(games))
 
 
 # Win rate : 実数
@@ -76,7 +63,7 @@ if __name__ == "__main__":
             print(f"* b から見た a とのレーティング差: {difference_b_to_a}")
 
             # b から見た a に１勝するために必要な対局数
-            games_b_to_a = get_games_by_rating_difference(difference_b_to_a)
+            games_b_to_a = get_games_by_rating_difference(difference_b_to_a) # ★
             print(f"* b から見た a に１勝するために必要な対局数: {games_b_to_a}")
 
             # b から見た a への勝率
@@ -105,7 +92,7 @@ if __name__ == "__main__":
             print(f"* a から見た b とのレーティング差: {difference_a_to_b}")
 
             # a から見た b に１勝するために必要な対局数
-            games_a_to_b = get_games_by_rating_difference(difference_a_to_b)
+            games_a_to_b = get_games_by_rating_difference(difference_a_to_b) # ★
             print(f"* a から見た b に１勝するために必要な対局数: {games_a_to_b}")
 
             # a から見た b への勝率
