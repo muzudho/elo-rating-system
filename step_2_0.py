@@ -13,6 +13,7 @@ K = 32
 
 
 # １勝するために必要な対局数（暗記表の x ）を取得
+# 実数でも算出できるが、（1.0 以上の数になるよう数式を調整している前提で）整数にして返す
 def get_games_by_rating_difference(
         rating_difference): # 暗記表の y
     
@@ -23,11 +24,13 @@ def get_games_by_rating_difference(
     # 負数なら
     elif rating_difference <0:
         # 負数を指定できないので、符号をひっくり返して、あとで戻す
-        return -400 * math.log10(-rating_difference)
+        return -math.floor(400 * math.log10(-rating_difference))
+        # マイナス符号の付ける位置で結果が変わってくるので注意
+        #return math.floor(-400 * math.log10(-rating_difference))
 
     # 正の数なら
     else:
-        return 400 * math.log10(rating_difference)
+        return math.floor(400 * math.log10(rating_difference))
 
 
 # レーティング差（暗記表の y ）を取得
