@@ -15,8 +15,17 @@ K = 32
 # １勝するために必要な対局数（暗記表の x ）を取得
 def get_games_by_rating_difference(
         rating_difference): # 暗記表の y
+    
+    # ゼロなら
     if rating_difference==0:
         return 1
+    
+    # 負数なら
+    elif rating_difference <0:
+        # 負数を指定できないので、符号をひっくり返して、あとで戻す
+        return -400 * math.log10(-rating_difference)
+
+    # 正の数なら
     else:
         return 400 * math.log10(rating_difference)
 
