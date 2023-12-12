@@ -87,10 +87,10 @@ if __name__ == "__main__":
 
             print(f"* b から見た a への勝率(Wba): {Wba}")
 
-            offset = math.floor(K * Wba)
-            ratings[1] += offset
-            ratings[2] -= offset
-            print(f"* K: {K},  offset: {offset},  ratings: A {ratings[1]}, B {ratings[2]}")
+            moving_rating = math.floor(K * Wba)
+            ratings[1] += moving_rating
+            ratings[2] -= moving_rating
+            print(f"* K: {K},  moving_rating: {moving_rating},  ratings: A {ratings[1]}, B {ratings[2]}")
 
         # B が勝った
         elif result == 2:
@@ -116,10 +116,10 @@ if __name__ == "__main__":
 
             print(f"* a から見た b への勝率(Wab): {Wab}")
 
-            offset = math.floor(K * Wab)
-            ratings[2] += offset
-            ratings[1] -= offset
-            print(f"* K: {K},  offset: {offset},  ratings: A {ratings[1]}, B {ratings[2]}")
+            moving_rating = math.floor(K * Wab)
+            ratings[2] += moving_rating
+            ratings[1] -= moving_rating
+            print(f"* K: {K},  offset: {moving_rating},  ratings: A {ratings[1]}, B {ratings[2]}")
 
         else:
             print("Error")
@@ -136,6 +136,8 @@ if __name__ == "__main__":
 
         # ファイルへ保存
         with open('data/step_2_0.csv', mode='w') as f:
+
+            # 集計
             f.write(f"""\
 player,  win, rating
 ------, ----, ------

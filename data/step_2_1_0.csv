@@ -1,0 +1,6 @@
+player_1_name, player_1_rating_before_game, player_2_name, player_2_rating_before_game, win_player, moving_rating
+A, 2000, B, 2000, 2, 16
+A, 1984, B, 2016, 2, 31
+A, 1953, B, 2047, 2, 31
+A, 1922, B, 2078, 1, -1
+A, 1921, B, 2079, 0, 0
