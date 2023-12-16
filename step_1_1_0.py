@@ -37,6 +37,7 @@ if __name__ == "__main__":
     def on_my_tournament_is_over():
         """大会終了時"""
 
+        # 集計の表示
         print(f"aiko: {total_games[0]}, A win: {total_games[1]}, B win: {total_games[2]}")
 
 

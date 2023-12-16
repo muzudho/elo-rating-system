@@ -1,8 +1,11 @@
 #
-# python step_2_2_0.py
+# python step_3_0.py
 #
 # プレイヤーのデータベースを連想配列で作る
 #
+from step_1_0 import main, on_my_tournament_executing, gyanken
+from step_2_1_0 import on_my_game_over, on_my_tournament_is_over
+
 
 # プレイヤーのデータベース
 player_database = {
@@ -22,6 +25,7 @@ player_database = {
         "rating" : 2000,
     },
 }
+
 
 def on_my_tournament_executing(
         round,
@@ -53,3 +57,35 @@ def on_my_tournament_executing(
 
     # 大会終了時
     on_tournament_is_over()
+
+
+if __name__ == "__main__":
+
+    # 集計（Totalization）
+    # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
+    total_games = [0,0,0]
+
+    # この対局でのレーティングについて
+    # [0] : 未使用
+    # [1] : プレイヤー１のレーティング
+    # [2] : プレイヤー２のレーティング
+    # 初期値：　R0 = 2000
+    ratings = [0, 2000, 2000]
+
+    # Constant K
+    K = 32
+
+
+    # 開始
+    print(f"""\
++-------+
+| start |
++-------+\
+* ratings: A {ratings[1]}, B {ratings[2]}""")
+
+    # プログラムの実行
+    main(
+        on_tournament_executing=on_my_tournament_executing,
+        on_gyanken=gyanken,
+        on_game_over=on_my_game_over,
+        on_tournament_is_over=on_my_tournament_is_over)

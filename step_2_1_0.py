@@ -69,6 +69,86 @@ player_1_name, player_1_rating_before_game, player_2_name, player_2_rating_befor
 """)
 
 
+
+def on_my_game_over(result):
+    """対局終了時
+
+    Parameters
+    ----------
+    result : int
+        0: あいこ
+        1: プレイヤー１の勝ち
+        2: プレイヤー２の勝ち
+    """
+
+    # あいこ
+    if result == 0:
+        # レーティングは動きません
+
+        # 対局の記録
+        game_records.append(GameRecord(
+            player_name_1="A",
+            player_name_2="B",
+            win_player=0,
+            player_1_rating_before_game=ratings[1],
+            player_2_rating_before_game=ratings[2],
+            moving_rating_after_game=0))
+
+        on_my_drawn_print(ratings)
+
+    # A が勝った
+    elif result == 1:
+        # レーティングの変動
+        answers = calculate_moving_rating_that_a_wins(K, ratings)
+
+        # 対局の記録
+        game_records.append(GameRecord(
+            player_name_1="A",
+            player_name_2="B",
+            win_player=1,
+            player_1_rating_before_game=ratings[1],
+            player_2_rating_before_game=ratings[2],
+            moving_rating_after_game=answers["moving_rating"]))
+
+        ratings[1] += answers["moving_rating"]
+        ratings[2] -= answers["moving_rating"]
+
+        on_a_win_print(ratings, K, answers)
+
+    # B が勝った
+    elif result == 2:
+        # レーティングの変動
+        answers = calculate_moving_rating_that_b_wins(K, ratings)
+
+        # 対局の記録
+        game_records.append(GameRecord(
+            player_name_1="A",
+            player_name_2="B",
+            win_player=2,
+            player_1_rating_before_game=ratings[1],
+            player_2_rating_before_game=ratings[2],
+            moving_rating_after_game=answers["moving_rating"]))
+
+        ratings[2] += answers["moving_rating"]
+        ratings[1] -= answers["moving_rating"]
+
+        on_b_win_print(ratings, K, answers)
+
+    else:
+        print("Error")
+
+    total_games[result] += 1
+
+
+def on_my_tournament_is_over():
+
+    # 表示
+    on_tournament_is_over_print(total_games, ratings)
+
+    # ファイルへ保存
+    on_tournament_is_over_save(game_records)
+
+
 if __name__ == "__main__":
 
     # 集計（Totalization）
@@ -84,84 +164,6 @@ if __name__ == "__main__":
 
     # Constant K
     K = 32
-
-    def on_my_game_over(result):
-        """対局終了時
-
-        Parameters
-        ----------
-        result : int
-            0: あいこ
-            1: プレイヤー１の勝ち
-            2: プレイヤー２の勝ち
-        """
-
-        # あいこ
-        if result == 0:
-            # レーティングは動きません
-
-            # 対局の記録
-            game_records.append(GameRecord(
-                player_name_1="A",
-                player_name_2="B",
-                win_player=0,
-                player_1_rating_before_game=ratings[1],
-                player_2_rating_before_game=ratings[2],
-                moving_rating_after_game=0))
-
-            on_my_drawn_print(ratings)
-
-        # A が勝った
-        elif result == 1:
-            # レーティングの変動
-            answers = calculate_moving_rating_that_a_wins(K, ratings)
-
-            # 対局の記録
-            game_records.append(GameRecord(
-                player_name_1="A",
-                player_name_2="B",
-                win_player=1,
-                player_1_rating_before_game=ratings[1],
-                player_2_rating_before_game=ratings[2],
-                moving_rating_after_game=answers["moving_rating"]))
-
-            ratings[1] += answers["moving_rating"]
-            ratings[2] -= answers["moving_rating"]
-
-            on_a_win_print(ratings, K, answers)
-
-        # B が勝った
-        elif result == 2:
-            # レーティングの変動
-            answers = calculate_moving_rating_that_b_wins(K, ratings)
-
-            # 対局の記録
-            game_records.append(GameRecord(
-                player_name_1="A",
-                player_name_2="B",
-                win_player=2,
-                player_1_rating_before_game=ratings[1],
-                player_2_rating_before_game=ratings[2],
-                moving_rating_after_game=answers["moving_rating"]))
-
-            ratings[2] += answers["moving_rating"]
-            ratings[1] -= answers["moving_rating"]
-
-            on_b_win_print(ratings, K, answers)
-
-        else:
-            print("Error")
-
-        total_games[result] += 1
-
-
-    def on_my_tournament_is_over():
-
-        # 表示
-        on_tournament_is_over_print(total_games, ratings)
-
-        # ファイルへ保存
-        on_tournament_is_over_save(game_records)
 
 
     # 開始
