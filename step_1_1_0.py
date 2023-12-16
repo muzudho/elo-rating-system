@@ -1,37 +1,7 @@
 #
 # python step_1_1_0.py
 #
-from step_1_0 import on_my_tournament_executing, gyanken
-
-
-def main(
-        on_tournament_executing,
-        on_gyanken,
-        on_game_over,
-        on_tournament_is_over):
-    """プログラムのフレームワーク
-    
-    Parameters
-    ----------
-    on_tournament_executing : func
-        大会のフレームワーク
-    on_tournament_is_over: func
-        大会終了時
-    on_gyanken:
-        対局実行
-    on_game_over: func
-        対局終了時
-    """
-
-    print("Please input round number(1-100):")
-    round = int(input())
-
-    # 大会の実行
-    on_tournament_executing(
-        round=round,
-        on_gyanken=on_gyanken,
-        on_game_over=on_game_over,
-        on_tournament_is_over=on_tournament_is_over)
+from step_1_0 import main, on_my_tournament_executing, gyanken
 
 
 if __name__ == "__main__":

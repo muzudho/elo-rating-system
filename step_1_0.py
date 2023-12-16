@@ -31,10 +31,10 @@ def main(
 
     # 大会の実行
     on_tournament_executing(
-        round,
-        on_tournament_is_over,
-        on_game_over,
-        on_gyanken)
+        round=round,
+        on_tournament_is_over=on_tournament_is_over,
+        on_gyanken=on_gyanken,
+        on_game_over=on_game_over)
 
 
 def on_my_tournament_executing(
