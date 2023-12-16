@@ -60,7 +60,7 @@ def on_my_tournament_executing(
 
     for i in range(0, round):
         # 対局実行
-        result = on_gyanken()
+        result = on_gyanken("player_1", "player_2")
 
         # 結果
         on_game_over(result)
@@ -69,7 +69,7 @@ def on_my_tournament_executing(
     on_tournament_is_over()
 
 
-def gyanken():
+def gyanken(player_1_id, player_2_id):
     """ジャンケンをする。
 
     Returns
