@@ -3,39 +3,15 @@
 #
 # プレイヤーのデータベースを連想配列で作る
 #
+import random
 from step_1_0 import main, execute_tournament, gyanken
 from step_2_0 import calculate_moving_rating_that_a_wins,\
         calculate_moving_rating_that_b_wins, print_drawn, print_a_win, print_b_win
 from step_2_1_0 import GameRecord, save_game_records
 
 
-# プレイヤーのデータベース
-# 操作のしやすさから、辞書ではなくリストを使う
-player_database = [
-    {
-        # Id
-        "id" : "player_1",
-        # 表示名
-        "display_name" : "Alice",
-        # レーティング
-        "rating" : 2000,
-    },
-    {
-        # Id
-        "id" : "player_2",
-        "display_name" : "Bob",
-        "rating" : 2000,
-    },
-    {
-        # Id
-        "id" : "player_3",
-        "display_name" : "Charley",
-        "rating" : 2000,
-    },
-]
-
-
 def execute_tournament(
+        player_database,
         round,
         on_tournament_is_over,
         on_gyanken,
@@ -46,6 +22,8 @@ def execute_tournament(
 
     Parameters
     ----------
+    player_database : object
+        プレイヤー・データベース
     round : int
         対局数
     on_tournament_is_over : func
@@ -57,8 +35,18 @@ def execute_tournament(
     """
 
     for i in range(0, round):
+
+        # TODO プレイヤーのデータベースから、プレイヤーのIdを２つ選びたい
+        two_player_records = random.sample(player_database, 2)
+
+        sente_id = two_player_records[0]["id"]
+        gote_id = two_player_records[1]["id"]
+
         # 対局実行
-        result = on_gyanken("player_1", "player_2", player_database)
+        result = on_gyanken(
+            sente_id=sente_id,
+            gote_id=gote_id,
+            player_database=player_database)
 
         # 結果
         on_game_over(result)
@@ -94,6 +82,31 @@ def print_tournament_result(total_games, ratings, player_database):
 
 
 if __name__ == "__main__":
+
+    # プレイヤーのデータベース
+    # 操作のしやすさから、辞書ではなくリストを使う
+    player_database = [
+        {
+            # Id
+            "id" : "player_1",
+            # 表示名
+            "display_name" : "Alice",
+            # レーティング
+            "rating" : 2000,
+        },
+        {
+            # Id
+            "id" : "player_2",
+            "display_name" : "Bob",
+            "rating" : 2000,
+        },
+        {
+            # Id
+            "id" : "player_3",
+            "display_name" : "Charley",
+            "rating" : 2000,
+        },
+    ]
 
     # 集計（Totalization）
     # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
@@ -205,6 +218,7 @@ if __name__ == "__main__":
 
     # プログラムの実行
     main(
+        player_database=player_database,
         on_tournament_executing=execute_tournament,
         on_gyanken=gyanken,
         on_game_over=on_my_game_over,

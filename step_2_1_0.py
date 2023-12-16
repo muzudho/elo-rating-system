@@ -66,6 +66,9 @@ player_1_name, player_1_rating_before_game, player_2_name, player_2_rating_befor
 
 if __name__ == "__main__":
 
+    # プレイヤーのデータベース（まだない）
+    player_database = {}
+
     # 集計（Totalization）
     # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
     total_games = [0,0,0]
@@ -176,6 +179,7 @@ if __name__ == "__main__":
 
     # プログラムの実行
     main(
+        player_database=player_database,
         on_tournament_executing=execute_tournament,
         on_gyanken=gyanken,
         on_game_over=on_my_game_over,

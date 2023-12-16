@@ -5,6 +5,7 @@ import random
 
 
 def main(
+        player_database,
         on_tournament_executing,
         on_tournament_is_over,
         on_gyanken,
@@ -15,6 +16,8 @@ def main(
 
     Parameters
     ----------
+    player_database : object
+        プレイヤー・データベース
     on_tournament_executing : func
         大会のフレームワーク
     on_tournament_is_over: func
@@ -31,6 +34,7 @@ def main(
 
     # 大会の実行
     on_tournament_executing(
+        player_database=player_database,
         round=round,
         on_tournament_is_over=on_tournament_is_over,
         on_gyanken=on_gyanken,
@@ -38,6 +42,7 @@ def main(
 
 
 def execute_tournament(
+        player_database,
         round,
         on_tournament_is_over,
         on_gyanken,
@@ -48,6 +53,8 @@ def execute_tournament(
 
     Parameters
     ----------
+    player_database : object
+        プレイヤー・データベース
     round : int
         対局数
     on_tournament_is_over : func
@@ -59,11 +66,16 @@ def execute_tournament(
     """
 
     for i in range(0, round):
-        # プレイヤーのデータベース（まだない）
-        player_database = {}
+
+        # プレイヤーのデータベースから、プレイヤーのIdを２つ選びたい。今回はダミー値を使います
+        sente_id = "player_1"
+        gote_id = "player_2"
 
         # 対局実行
-        result = on_gyanken("player_1", "player_2", player_database)
+        result = on_gyanken(
+            sente_id=sente_id,
+            gote_id=gote_id,
+            player_database=player_database)
 
         # 結果
         on_game_over(result)
@@ -72,9 +84,18 @@ def execute_tournament(
     on_tournament_is_over()
 
 
-def gyanken(player_1_id, player_2_id, player_database):
+def gyanken(sente_id, gote_id, player_database):
     """ジャンケンをする。
 
+    Parameters
+    ----------
+    sente_id : str
+        先手のプレイヤーId
+    gote_id : str
+        後手のプレイヤーId
+    player_database : object
+        プレイヤー・データベース
+    
     Returns
     -------
     0: あいこ
@@ -84,6 +105,9 @@ def gyanken(player_1_id, player_2_id, player_database):
 
 
 if __name__ == "__main__":
+
+    # プレイヤーのデータベース（まだない）
+    player_database = {}
 
     # 集計（Totalization）
     # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
@@ -125,6 +149,7 @@ if __name__ == "__main__":
 
     # プログラムの実行
     main(
+        player_database = player_database,
         on_tournament_executing = execute_tournament,
         on_tournament_is_over = on_my_tournament_is_over,
         on_gyanken = gyanken,

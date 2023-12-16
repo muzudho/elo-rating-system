@@ -147,10 +147,17 @@ player,  win, rating
 
 if __name__ == "__main__":
 
+    # プレイヤーのデータベース（まだない）
+    player_database = {}
+
+    # データベースから２人のプレイヤーを選び、その２人分の集計とする
+    #
     # 集計（Totalization）
     # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
     total_games = [0,0,0]
 
+    # データベースから２人のプレイヤーを選び、そのレーティングをセットしたい。今回は行わない
+    #
     # この対局でのレーティングについて
     # [0] : 未使用
     # [1] : プレイヤー１のレーティング
@@ -232,6 +239,7 @@ if __name__ == "__main__":
 
     # プログラムの実行
     main(
+        player_database=player_database,
         on_tournament_executing=execute_tournament,
         on_gyanken=gyanken,
         on_game_over=on_my_game_over,
