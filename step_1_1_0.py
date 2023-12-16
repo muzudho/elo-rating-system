@@ -10,6 +10,16 @@ if __name__ == "__main__":
     total_games = [0,0,0]
 
     def on_my_game_over(result):
+        """対局終了時
+
+        Parameters
+        ----------
+        result : int
+            0: あいこ
+            1: プレイヤー１の勝ち
+            2: プレイヤー２の勝ち
+        """
+
         if result == 0:
             print("aiko")
         elif result == 1:
@@ -23,15 +33,8 @@ if __name__ == "__main__":
 
 
     def on_my_tournament_is_over():
-        """対局終了時
-
-        Parameters
-        ----------
-        result : int
-            0: あいこ
-            1: プレイヤー１の勝ち
-            2: プレイヤー２の勝ち
-        """
+        """大会終了時"""
+        
         print(f"aiko: {total_games[0]}, A win: {total_games[1]}, B win: {total_games[2]}")
 
 

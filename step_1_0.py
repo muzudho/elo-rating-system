@@ -103,6 +103,7 @@ if __name__ == "__main__":
             1: プレイヤー１の勝ち
             2: プレイヤー２の勝ち
         """
+        
         if result == 0:
             print("aiko")
         elif result == 1:

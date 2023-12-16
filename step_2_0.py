@@ -3,7 +3,8 @@
 #
 import math
 
-from step_1_1_0 import on_gyanken_1, total_games, main
+from step_1_0 import on_my_tournament_executing, gyanken
+from step_1_1_0 import main
 
 # R0 = 2000
 ratings = [0, 2000, 2000]
@@ -82,7 +83,19 @@ def calculate_moving_rating_that_b_wins():
 
 if __name__ == "__main__":
 
-    def on_my_tournament_is_over(result):
+    # 集計。あいこの数, Aの勝利数, Bの勝利数
+    total_games = [0,0,0]
+
+    def on_my_game_over(result):
+        """対局終了時
+
+        Parameters
+        ----------
+        result : int
+            0: あいこ
+            1: プレイヤー１の勝ち
+            2: プレイヤー２の勝ち
+        """
 
         # あいこ
         if result == 0:
@@ -98,45 +111,49 @@ if __name__ == "__main__":
         elif result == 1:
 
             # A が勝った時のレーティングの移動量
-            result = calculate_moving_rating_that_a_wins()
+            answers = calculate_moving_rating_that_a_wins()
 
             print(f"""\
 +-------+
 | A win |
 +-------+
-* b から見た a とのレーティング差: {result["difference_b_to_a"]}
-* b から見た a に１勝するために必要な対局数: {result["games_b_to_a"]}
-* b から見た a への勝率(Wba): {result["Wba"]}\
+* b から見た a とのレーティング差: {answers["difference_b_to_a"]}
+* b から見た a に１勝するために必要な対局数: {answers["games_b_to_a"]}
+* b から見た a への勝率(Wba): {answers["Wba"]}\
 """)
 
-            ratings[1] += result["moving_rating"]
-            ratings[2] -= result["moving_rating"]
-            print(f"* K: {K},  moving_rating: {result['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}")
+            ratings[1] += answers["moving_rating"]
+            ratings[2] -= answers["moving_rating"]
+            print(f"* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}")
 
         # B が勝った
         elif result == 2:
 
             # B が勝った時のレーティングの移動量
-            result = calculate_moving_rating_that_b_wins()
+            answers = calculate_moving_rating_that_b_wins()
 
             print(f"""\
 +-------+
 | B win |
 +-------+
-* a から見た b とのレーティング差: {result["difference_a_to_b"]}
-* a から見た b に１勝するために必要な対局数: {result["games_a_to_b"]}
-* a から見た b への勝率(Wab): {result["Wab"]}\
+* a から見た b とのレーティング差: {answers["difference_a_to_b"]}
+* a から見た b に１勝するために必要な対局数: {answers["games_a_to_b"]}
+* a から見た b への勝率(Wab): {answers["Wab"]}\
 """)
 
-            ratings[2] += result["moving_rating"]
-            ratings[1] -= result["moving_rating"]
-            print(f"* K: {K},  moving_rating: {result['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}")
+            ratings[2] += answers["moving_rating"]
+            ratings[1] -= answers["moving_rating"]
+            print(f"* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}")
 
         else:
             print("Error")
 
+        total_games[result] += 1
 
-    def on_end_1():
+
+    def on_my_tournament_is_over():
+        """大会終了時"""
+
         print(f"""\
 +--------+
 | result |
@@ -158,6 +175,7 @@ player,  win, rating
 """)
 
 
+    # 開始
     print("""\
 +-------+
 | start |
@@ -168,6 +186,8 @@ player,  win, rating
     print(f"* ratings: A {ratings[1]}, B {ratings[2]}")
 
 
-    main(on_gyanken=on_gyanken_1,
-         on_tournament_is_over=on_my_tournament_is_over,
-         on_end=on_end_1)
+    main(
+        on_tournament_executing=on_my_tournament_executing,
+        on_gyanken=gyanken,
+        on_game_over=on_my_game_over,
+        on_tournament_is_over=on_my_tournament_is_over)
