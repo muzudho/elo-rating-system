@@ -1,11 +1,9 @@
 #
 # python step_2_1_0.py
 #
-import math
-
-from step_1_1_0 import on_gyanken_1, total_games, main
-from step_2_0 import ratings, K, get_games_by_rating_difference, get_rating_difference_by_games,\
-      get_win_rate_for_upper_rating, get_win_rate_for_lower_rating,calculate_moving_rating_that_a_wins,\
+from step_1_0 import on_my_tournament_executing, gyanken
+from step_1_1_0 import main
+from step_2_0 import calculate_moving_rating_that_a_wins,\
         calculate_moving_rating_that_b_wins
 
 
@@ -59,7 +57,25 @@ class GameRecord():
 
 if __name__ == "__main__":
 
-    def on_my_tournament_is_over(result):
+    # 集計。あいこの数, Aの勝利数, Bの勝利数
+    total_games = [0,0,0]
+
+    # R0 = 2000
+    ratings = [0, 2000, 2000]
+
+    # Constant K
+    K = 32
+
+    def on_my_game_over(result):
+        """対局終了時
+
+        Parameters
+        ----------
+        result : int
+            0: あいこ
+            1: プレイヤー１の勝ち
+            2: プレイヤー２の勝ち
+        """
 
         # あいこ
         if result == 0:
@@ -82,7 +98,7 @@ if __name__ == "__main__":
         # A が勝った
         elif result == 1:
             # レーティングの変動
-            result_2 = calculate_moving_rating_that_a_wins()
+            result_2 = calculate_moving_rating_that_a_wins(K, ratings)
 
             game_records.append(GameRecord(
                 player_name_1="A",
@@ -104,7 +120,7 @@ if __name__ == "__main__":
         # B が勝った
         elif result == 2:
             # レーティングの変動
-            result_2 = calculate_moving_rating_that_b_wins()
+            result_2 = calculate_moving_rating_that_b_wins(K, ratings)
 
             game_records.append(GameRecord(
                 player_name_1="A",
@@ -126,8 +142,10 @@ if __name__ == "__main__":
         else:
             print("Error")
 
+        total_games[result] += 1
 
-    def on_end_1():
+
+    def on_my_tournament_is_over():
         print(f"""\
 +--------+
 | result |
@@ -149,16 +167,16 @@ player_1_name, player_1_rating_before_game, player_2_name, player_2_rating_befor
 """)
 
 
-    print("""\
+    # 開始
+    print(f"""\
 +-------+
 | start |
 +-------+\
-          """)
-    
-    # レーティングは動きません
-    print(f"* ratings: A {ratings[1]}, B {ratings[2]}")
+* ratings: A {ratings[1]}, B {ratings[2]}""")
 
-
-    main(on_gyanken=on_gyanken_1,
-         on_tournament_is_over=on_my_tournament_is_over,
-         on_end=on_end_1)
+    # プログラムの実行
+    main(
+        on_tournament_executing=on_my_tournament_executing,
+        on_gyanken=gyanken,
+        on_game_over=on_my_game_over,
+        on_tournament_is_over=on_my_tournament_is_over)

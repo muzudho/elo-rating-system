@@ -32,7 +32,7 @@ def get_win_rate_for_lower_rating(win_games):
 
 
 # A が勝った時のレーティングの移動量
-def calculate_moving_rating_that_a_wins(ratings):
+def calculate_moving_rating_that_a_wins(K, ratings):
 
     result = {}
 
@@ -40,7 +40,7 @@ def calculate_moving_rating_that_a_wins(ratings):
     result["difference_b_to_a"] = ratings[1] - ratings[2]
 
     # b から見た a に１勝するために必要な対局数
-    result["games_b_to_a"] = get_games_by_rating_difference(result["difference_b_to_a"]) # ★
+    result["games_b_to_a"] = get_games_by_rating_difference(result["difference_b_to_a"])
 
     # b から見た a への勝率
     if 0 <= result["difference_b_to_a"]:
@@ -54,7 +54,7 @@ def calculate_moving_rating_that_a_wins(ratings):
 
 
 # B が勝った時のレーティングの移動量
-def calculate_moving_rating_that_b_wins(ratings):
+def calculate_moving_rating_that_b_wins(K, ratings):
 
     result = {}
 
@@ -62,7 +62,7 @@ def calculate_moving_rating_that_b_wins(ratings):
     result["difference_a_to_b"] = ratings[2] - ratings[1]
 
     # a から見た b に１勝するために必要な対局数
-    result["games_a_to_b"] = get_games_by_rating_difference(result["difference_a_to_b"]) # ★
+    result["games_a_to_b"] = get_games_by_rating_difference(result["difference_a_to_b"])
 
     # a から見た b への勝率
     if 0 <= result["difference_a_to_b"]:
@@ -110,7 +110,7 @@ if __name__ == "__main__":
         elif result == 1:
 
             # A が勝った時のレーティングの移動量
-            answers = calculate_moving_rating_that_a_wins(ratings)
+            answers = calculate_moving_rating_that_a_wins(K, ratings)
 
             # ２者のレーティングが動きます
             ratings[1] += answers["moving_rating"]
@@ -130,7 +130,7 @@ if __name__ == "__main__":
         elif result == 2:
 
             # B が勝った時のレーティングの移動量
-            answers = calculate_moving_rating_that_b_wins(ratings)
+            answers = calculate_moving_rating_that_b_wins(K, ratings)
 
             # ２者のレーティングが動きます
             ratings[2] += answers["moving_rating"]
@@ -182,7 +182,6 @@ player,  win, rating
 | start |
 +-------+\
 * ratings: A {ratings[1]}, B {ratings[2]}""")
-    
 
     # プログラムの実行
     main(
