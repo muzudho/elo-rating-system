@@ -220,11 +220,18 @@ if __name__ == "__main__":
         """対局開始時"""
 
 
-    def on_my_game_over(result):
+    def on_my_game_over(
+            sente_id,
+            gote_id,
+            result):
         """対局終了時
 
         Parameters
         ----------
+        sente_id : str
+            先手プレイヤーのId
+        gote_id : str
+            後手プレイヤーのId
         result : int
             0: あいこ
             1: プレイヤー１の勝ち

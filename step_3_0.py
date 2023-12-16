@@ -52,7 +52,10 @@ def execute_tournament(
             player_database=player_database)
 
         # 結果
-        on_game_over(result)
+        on_game_over(
+            sente_id=sente_id,
+            gote_id=gote_id,
+            result=result)
 
 
 def print_tournament_result(total_games, ratings, player_database):
@@ -163,11 +166,18 @@ if __name__ == "__main__":
         pass
 
 
-    def on_my_game_over(result):
+    def on_my_game_over(
+            sente_id,
+            gote_id,
+            result):
         """対局終了時
 
         Parameters
         ----------
+        sente_id : str
+            先手プレイヤーのId
+        gote_id : str
+            後手プレイヤーのId
         result : int
             0: あいこ
             1: プレイヤー１の勝ち
