@@ -263,7 +263,7 @@ if __name__ == "__main__":
         # B が勝った
         elif result == 2:
             # レーティングの変動
-            answers = calculate_moving_rating_that_a_wins(
+            answers = calculate_moving_rating_that_b_wins(
                 K=K,
                 ratings=[0, sente_player_record['rating'], gote_player_record['rating']])
 

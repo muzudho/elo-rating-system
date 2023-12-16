@@ -110,6 +110,10 @@ def print_a_win(ratings, K, answers):
 
 def print_b_win(ratings, K, answers):
     """B が勝ったときの表示"""
+
+    #print("answers:")
+    #print(answers)
+
     print(f"""\
 +-------+
 | B win |
