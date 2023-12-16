@@ -87,6 +87,11 @@ if __name__ == "__main__":
     game_records = []
 
 
+    def on_my_tournament_is_start():
+        """大会開始時"""
+        pass
+
+
     def on_my_tournament_is_over():
 
         # データベースへの反映は、今回は行いません
@@ -179,12 +184,13 @@ if __name__ == "__main__":
     print(f"""\
 +-------+
 | start |
-+-------+\
++-------+
 * ratings: A {ratings[1]}, B {ratings[2]}""")
 
     # プログラムの実行
     main(
         player_database=player_database,
+        on_tournament_is_start = on_my_tournament_is_start,
         on_tournament_executing=execute_tournament,
         on_tournament_is_over=on_my_tournament_is_over,
         on_game_start = on_my_game_start,

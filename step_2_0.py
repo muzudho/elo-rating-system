@@ -186,9 +186,38 @@ if __name__ == "__main__":
     K = 32
 
 
+    def on_my_tournament_is_start():
+        """大会開始時"""
+        # 開始
+        # プレイヤーのデータベースから、プレイヤーを選ぶ
+        two_player_records = random.sample(player_database, 2)
+        # ２プレイヤーのレーティングを表示したい
+
+        print(f"""\
++-------+
+| start |
++-------+
+* ratings: {two_player_records[0]['display_name']} {two_player_records[0]['rating']}, {two_player_records[1]['display_name']} {two_player_records[1]['rating']}\
+""")
+
+
+    def on_my_tournament_is_over():
+        """大会終了時"""
+
+        # データベースへの反映は、今回は行いません
+
+        # 大会結果の表示
+        print_tournament_result(total_games, ratings)
+
+        # 対局記録の集計をファイルへ保存
+        save_game_summary(
+            path='data_output/step_2_0.csv',
+            total_games=total_games,
+            ratings=ratings)
+
+
     def on_my_game_start():
         """対局開始時"""
-        pass
 
 
     def on_my_game_over(result):
@@ -237,36 +266,10 @@ if __name__ == "__main__":
         total_games[result] += 1
 
 
-    def on_my_tournament_is_over():
-        """大会終了時"""
-
-        # データベースへの反映は、今回は行いません
-
-        # 大会結果の表示
-        print_tournament_result(total_games, ratings)
-
-        # 対局記録の集計をファイルへ保存
-        save_game_summary(
-            path='data_output/step_2_0.csv',
-            total_games=total_games,
-            ratings=ratings)
-
-
-    # 開始
-    # プレイヤーのデータベースから、プレイヤーを選ぶ
-    two_player_records = random.sample(player_database, 2)
-    # ２プレイヤーのレーティングを表示したい
-
-    print(f"""\
-+-------+
-| start |
-+-------+
-* ratings: {two_player_records[0]['display_name']} {two_player_records[0]['rating']}, {two_player_records[1]['display_name']} {two_player_records[1]['rating']}\
-""")
-
     # プログラムの実行
     main(
         player_database=player_database,
+        on_tournament_is_start=on_my_tournament_is_start,
         on_tournament_executing=execute_tournament,
         on_tournament_is_over=on_my_tournament_is_over,
         on_game_start = on_my_game_start,

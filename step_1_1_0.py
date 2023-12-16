@@ -14,6 +14,20 @@ if __name__ == "__main__":
     total_games = [0,0,0]
 
 
+    def on_my_tournament_is_start():
+        """大会開始時"""
+        pass
+
+
+    def on_my_tournament_is_over():
+        """大会終了時"""
+
+        # データベースへの反映は、今回は行いません
+
+        # 集計の表示
+        print(f"aiko: {total_games[0]}, A win: {total_games[1]}, B win: {total_games[2]}")
+
+
     def on_my_game_start():
         """対局開始時"""
         pass
@@ -42,18 +56,10 @@ if __name__ == "__main__":
         total_games[result] += 1
 
 
-    def on_my_tournament_is_over():
-        """大会終了時"""
-
-        # データベースへの反映は、今回は行いません
-
-        # 集計の表示
-        print(f"aiko: {total_games[0]}, A win: {total_games[1]}, B win: {total_games[2]}")
-
-
     # プログラムの実行
     main(
         player_database = player_database,
+        on_tournament_is_start = on_my_tournament_is_start,
         on_tournament_executing = execute_tournament,
         on_tournament_is_over=on_my_tournament_is_over,
         on_game_start = on_my_game_start,

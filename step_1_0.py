@@ -6,10 +6,11 @@ import random
 
 def main(
         player_database,
+        on_tournament_is_start,
         on_tournament_executing,
         on_tournament_is_over,
-        on_gyanken,
         on_game_start,
+        on_gyanken,
         on_game_over):
     """プログラムのフレームワーク
     
@@ -19,6 +20,8 @@ def main(
     ----------
     player_database : object
         プレイヤー・データベース
+    on_tournament_is_start: func
+        大会開始時
     on_tournament_executing : func
         大会のフレームワーク
     on_tournament_is_over: func
@@ -35,19 +38,25 @@ def main(
     print("Please input round number(1-100):")
     round = int(input())
 
+    # 大会開始時
+    on_tournament_is_start()
+
     # 大会の実行
     on_tournament_executing(
         player_database=player_database,
         round=round,
-        on_tournament_is_over=on_tournament_is_over,
+        on_game_start=on_game_start,
         on_gyanken=on_gyanken,
         on_game_over=on_game_over)
+
+    # 大会終了時
+    on_tournament_is_over()
 
 
 def execute_tournament(
         player_database,
         round,
-        on_tournament_is_over,
+        on_game_start,
         on_gyanken,
         on_game_over):
     """大会実行のフレームワーク
@@ -62,10 +71,12 @@ def execute_tournament(
         対局数
     on_tournament_is_over : func
         大会終了時
-    on_game_over : func
-        対局終了時
+    on_game_start : func
+        対局開始時
     on_gyanken : func
         対局実行
+    on_game_over : func
+        対局終了時
     """
 
     for i in range(0, round):
@@ -73,6 +84,9 @@ def execute_tournament(
         # プレイヤーのデータベースから、プレイヤーのIdを２つ選びたい。今回はダミー値を使います
         sente_id = "player_1"
         gote_id = "player_2"
+
+        # 対局開始
+        on_game_start()
 
         # 対局実行
         result = on_gyanken(
@@ -82,9 +96,6 @@ def execute_tournament(
 
         # 結果
         on_game_over(result)
-
-    # 大会終了時
-    on_tournament_is_over()
 
 
 def gyanken(sente_id, gote_id, player_database):
@@ -115,6 +126,11 @@ if __name__ == "__main__":
     # 集計（Totalization）
     # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
     total_games = [0,0,0]
+
+
+    def on_my_tournament_is_start():
+        """大会開始時"""
+        pass
 
 
     def on_my_tournament_is_over():
@@ -158,6 +174,7 @@ if __name__ == "__main__":
     # プログラムの実行
     main(
         player_database = player_database,
+        on_tournament_is_start = on_my_tournament_is_start,
         on_tournament_executing = execute_tournament,
         on_tournament_is_over = on_my_tournament_is_over,
         on_game_start = on_my_game_start,

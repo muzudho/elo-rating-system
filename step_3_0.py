@@ -13,7 +13,7 @@ from step_2_1_0 import GameRecord, save_game_records
 def execute_tournament(
         player_database,
         round,
-        on_tournament_is_over,
+        on_game_start,
         on_gyanken,
         on_game_over):
     """大会実行のフレームワーク
@@ -26,12 +26,12 @@ def execute_tournament(
         プレイヤー・データベース
     round : int
         対局数
-    on_tournament_is_over : func
-        大会終了時
-    on_game_over : func
-        対局終了時
+    on_game_start : func
+        対局開始時
     on_gyanken : func
         対局実行
+    on_game_over : func
+        対局終了時
     """
 
     for i in range(0, round):
@@ -42,6 +42,9 @@ def execute_tournament(
         sente_id = two_player_records[0]["id"]
         gote_id = two_player_records[1]["id"]
 
+        # 対局開始
+        on_game_start()
+
         # 対局実行
         result = on_gyanken(
             sente_id=sente_id,
@@ -50,9 +53,6 @@ def execute_tournament(
 
         # 結果
         on_game_over(result)
-
-    # 大会終了時
-    on_tournament_is_over()
 
 
 def print_tournament_result(total_games, ratings, player_database):
@@ -128,6 +128,11 @@ if __name__ == "__main__":
 
     # 対局の記録
     game_records = []
+
+
+    def on_my_tournament_is_start():
+        """大会開始時"""
+        pass
 
 
     def on_my_tournament_is_over():
@@ -222,12 +227,13 @@ if __name__ == "__main__":
     print(f"""\
 +-------+
 | start |
-+-------+\
++-------+
 * ratings: A {ratings[1]}, B {ratings[2]}""")
 
     # プログラムの実行
     main(
         player_database=player_database,
+        on_tournament_is_start = on_my_tournament_is_start,
         on_tournament_executing=execute_tournament,
         on_tournament_is_over=on_my_tournament_is_over,
         on_game_start = on_my_game_start,
