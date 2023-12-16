@@ -121,14 +121,33 @@ def print_b_win(ratings, K, answers):
 """)
 
 
-def print_tournament_result(total_games, ratings):
+def print_tournament_result(total_games, ratings, player_database):
     """大会終了時の表示"""
+
+    # プレイヤーをレーティング順に並べて表示したい
+    # 各プレイヤーを配列へ入れる
+    player_ranking = []
+
+    for player_record in player_database:
+        player_ranking.append(player_record)
+
+    # レーティング順にソートする
+    # https://www.geeksforgeeks.org/ways-sort-list-dictionaries-values-python-using-lambda-function/
+    player_ranking = sorted(player_ranking, key=lambda item: item['rating'])
+
     print(f"""\
 +-------------------+
 | tournament result |
-+-------------------+
-* games:    aiko: {total_games[0]:4},  A win: {total_games[1]:4},  B win: {total_games[2]:4}
-* ratings:  aiko: {ratings[0]:4},  A win: {ratings[1]:4},  B win: {ratings[2]:4}\
++-------------------+\
+""")
+    print_players_record(player_ranking)
+
+
+def print_players_record(player_record_list):
+    """プレイヤーの記録を表示"""
+    for player_record in player_record_list:
+        print(f"""\
+* name: {player_record['display_name']:16}, rating: {player_record['rating']:4}\
 """)
 
 
@@ -210,7 +229,7 @@ if __name__ == "__main__":
         # データベースへの反映は、今回は行いません
 
         # 大会結果の表示
-        print_tournament_result(total_games, ratings)
+        print_tournament_result(total_games, ratings, player_database)
 
         # 対局記録の集計をファイルへ保存
         save_game_summary(
@@ -231,11 +250,11 @@ if __name__ == "__main__":
         gote_id : str
             後手プレイヤーのId
         """
-        print(f"[on_my_game_start] sente_id: {sente_id}, gote_id: {gote_id}")
+        #print(f"[on_my_game_start] sente_id: {sente_id}, gote_id: {gote_id}")
         sente_player_record = list(filter(lambda item : item["id"] == sente_id, player_database))[0]
         gote_player_record = list(filter(lambda item : item["id"] == gote_id, player_database))[0]
-        print(f"[on_my_game_start] sente_player_record: {sente_player_record}")
-        print(f"[on_my_game_start] gote_player_record: {gote_player_record}")
+        #print(f"[on_my_game_start] sente_player_record: {sente_player_record}")
+        #print(f"[on_my_game_start] gote_player_record: {gote_player_record}")
 
 
     def on_my_game_over(
@@ -255,11 +274,11 @@ if __name__ == "__main__":
             1: プレイヤー１の勝ち
             2: プレイヤー２の勝ち
         """
-        print(f"[on_my_game_over] sente_id: {sente_id}, gote_id: {gote_id}")
+        #print(f"[on_my_game_over] sente_id: {sente_id}, gote_id: {gote_id}")
         sente_player_record = list(filter(lambda item : item["id"] == sente_id, player_database))[0]
         gote_player_record = list(filter(lambda item : item["id"] == gote_id, player_database))[0]
-        print(f"[on_my_game_over] sente_player_record: {sente_player_record}")
-        print(f"[on_my_game_over] gote_player_record: {gote_player_record}")
+        #print(f"[on_my_game_over] sente_player_record: {sente_player_record}")
+        #print(f"[on_my_game_over] gote_player_record: {gote_player_record}")
 
         # あいこ
         if result == 0:
@@ -276,6 +295,25 @@ if __name__ == "__main__":
             sente_player_record["rating"] += answers["moving_rating"]
             gote_player_record["rating"] -= answers["moving_rating"]
 
+            # TODO アルゴリズム高速化できんか？
+            # データベースに反映
+            update_count = 0
+            for record in player_database:
+                if record['id'] == sente_player_record['id']:
+                    record['rating'] = sente_player_record["rating"]
+                    update_count += 1
+                    if 2 <= update_count:
+                        break
+
+                elif record['id'] == gote_player_record['id']:
+                    record['rating'] = gote_player_record["rating"]
+                    update_count += 1
+                    if 2 <= update_count:
+                        break
+
+            #print("player_database:")
+            #print(player_database)
+
             print_a_win(ratings, K, answers)
 
         # B が勝った
@@ -287,6 +325,25 @@ if __name__ == "__main__":
             # ２者のレーティングが動きます
             sente_player_record["rating"] += answers["moving_rating"]
             gote_player_record["rating"] -= answers["moving_rating"]
+
+            # TODO アルゴリズム高速化できんか？
+            # データベースに反映
+            update_count = 0
+            for record in player_database:
+                if record['id'] == sente_player_record['id']:
+                    record['rating'] = sente_player_record["rating"]
+                    update_count += 1
+                    if 2 <= update_count:
+                        break
+
+                elif record['id'] == gote_player_record['id']:
+                    record['rating'] = gote_player_record["rating"]
+                    update_count += 1
+                    if 2 <= update_count:
+                        break
+
+            #print("player_database:")
+            #print(player_database)
 
             print_b_win(ratings, K, answers)
 
