@@ -2,6 +2,7 @@
 # python step_2_0.py
 #
 import math
+import random
 
 from step_1_0 import main, execute_tournament, gyanken
 
@@ -147,8 +148,24 @@ player,  win, rating
 
 if __name__ == "__main__":
 
-    # プレイヤーのデータベース（まだない）
-    player_database = {}
+    # プレイヤーのデータベース
+    # 操作のしやすさから、辞書ではなくリストを使う
+    player_database = [
+        {
+            # Id
+            "id" : "player_1",
+            # 表示名
+            "display_name" : "Alice",
+            # レーティング
+            "rating" : 2000,
+        },
+        {
+            # Id
+            "id" : "player_2",
+            "display_name" : "Bob",
+            "rating" : 2000,
+        },
+    ]
 
     # データベースから２人のプレイヤーを選び、その２人分の集計とする
     #
@@ -227,15 +244,19 @@ if __name__ == "__main__":
         save_game_summary(
             path='data_output/step_2_0.csv',
             total_games=total_games,
-             ratings=ratings)
+            ratings=ratings)
 
 
     # 開始
+    # プレイヤーのデータベースから、プレイヤーを選ぶ
+    two_player_records = random.sample(player_database, 2)
+    # ２プレイヤーのレーティングを表示したい
+
     print(f"""\
 +-------+
 | start |
 +-------+
-* ratings: A {ratings[1]}, B {ratings[2]}""")
+* ratings: {two_player_records[0]['display_name']} {ratings[1]}, {two_player_records[1]['display_name']} {ratings[2]}""")
 
     # プログラムの実行
     main(

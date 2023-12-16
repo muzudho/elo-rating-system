@@ -74,8 +74,12 @@ def print_tournament_result(total_games, ratings, player_database):
 | tournament result |
 +-------------------+\
 """)
-    
-    for player_record in player_ranking:
+    print_players_record(player_ranking)
+
+
+def print_players_record(player_record_list):
+    """プレイヤーの記録を表示"""
+    for player_record in player_record_list:
         print(f"""\
 * name: {player_record['display_name']:16}, rating: {player_record['rating']:4}\
 """)
