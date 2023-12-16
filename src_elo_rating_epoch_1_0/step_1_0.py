@@ -27,9 +27,11 @@ def calculate_moving_rating_that_a_wins(K, ratings):
     result["games_b_to_a_formula"] = get_formula_games_by_rating_difference(result["difference_b_to_a"])
 
     # b から見た a への勝率
-    if 0 <= result["difference_b_to_a"]:
+    # b がレーティング上位者なら
+    if ratings[1] < ratings[2]:
         result["Wba"] = get_win_rate_for_upper_rating(result["games_b_to_a"])
         result["Wba_formula"] = get_formula_win_rate_for_upper_rating(result["games_b_to_a"])
+    # b がレーティング同等または下位者なら
     else:
         result["Wba"] = get_win_rate_for_lower_rating(result["games_b_to_a"])
         result["Wba_formula"] = get_formula_win_rate_for_lower_rating(result["games_b_to_a"])
@@ -61,9 +63,11 @@ def calculate_moving_rating_that_b_wins(K, ratings):
     result["games_a_to_b_formula"] = get_formula_games_by_rating_difference(result["difference_a_to_b"])
 
     # a から見た b への勝率
-    if 0 <= result["difference_a_to_b"]:
+    # a がレーティング上位者なら
+    if ratings[2] < ratings[1]:
         result["Wab"] = get_win_rate_for_upper_rating(result["games_a_to_b"])
         result["Wab_formula"] = get_formula_win_rate_for_upper_rating(result["games_a_to_b"])
+    # a がレーティング同等または下位者なら
     else:
         result["Wab"] = get_win_rate_for_lower_rating(result["games_a_to_b"])
         result["Wab_formula"] = get_formula_win_rate_for_lower_rating(result["games_a_to_b"])
