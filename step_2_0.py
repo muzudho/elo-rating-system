@@ -6,21 +6,6 @@ import math
 from step_1_0 import main, on_my_tournament_executing, gyanken
 
 
-# 集計（Totalization）
-# [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
-total_games = [0,0,0]
-
-# この対局でのレーティングについて
-# [0] : 未使用
-# [1] : プレイヤー１のレーティング
-# [2] : プレイヤー２のレーティング
-# 初期値：　R0 = 2000
-ratings = [0, 2000, 2000]
-
-# Constant K
-K = 32
-
-
 def calculate_moving_rating_that_a_wins(K, ratings):
     """A が勝った時のレーティングの移動量"""
 
@@ -100,16 +85,16 @@ def get_win_rate_for_lower_rating(win_games):
     return 1 / (win_games + 1)
 
 
-def on_my_drawn_print():
+def on_my_drawn_print(ratings):
     """あいこの表示"""
     print(f"""\
 +------+
 | aiko |
-+------+\
++------+
 * ratings: A {ratings[1]}, B {ratings[2]}""")
 
 
-def on_a_win_print(answers):
+def on_a_win_print(ratings, K, answers):
     """A が勝ったときの表示"""
     print(f"""\
 +-------+
@@ -122,7 +107,7 @@ def on_a_win_print(answers):
 """)
 
 
-def on_b_win_print(answers):
+def on_b_win_print(ratings, K, answers):
     """B が勝ったときの表示"""
     print(f"""\
 +-------+
@@ -136,6 +121,21 @@ def on_b_win_print(answers):
 
 
 if __name__ == "__main__":
+
+    # 集計（Totalization）
+    # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
+    total_games = [0,0,0]
+
+    # この対局でのレーティングについて
+    # [0] : 未使用
+    # [1] : プレイヤー１のレーティング
+    # [2] : プレイヤー２のレーティング
+    # 初期値：　R0 = 2000
+    ratings = [0, 2000, 2000]
+
+    # Constant K
+    K = 32
+
 
     def on_my_game_over(result):
         """対局終了時
@@ -151,7 +151,7 @@ if __name__ == "__main__":
         # あいこ
         if result == 0:
             # ２者のレーティングは動きません
-            on_my_drawn_print()
+            on_my_drawn_print(ratings)
 
         # A が勝った
         elif result == 1:
@@ -163,7 +163,7 @@ if __name__ == "__main__":
             ratings[1] += answers["moving_rating"]
             ratings[2] -= answers["moving_rating"]
 
-            on_a_win_print(answers)
+            on_a_win_print(ratings, K, answers)
 
         # B が勝った
         elif result == 2:
@@ -175,7 +175,7 @@ if __name__ == "__main__":
             ratings[2] += answers["moving_rating"]
             ratings[1] -= answers["moving_rating"]
 
-            on_b_win_print(answers)
+            on_b_win_print(ratings, K, answers)
 
         else:
             print("Error")

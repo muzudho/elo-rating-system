@@ -92,13 +92,7 @@ if __name__ == "__main__":
                 player_2_rating_before_game=ratings[2],
                 moving_rating_after_game=0))
 
-            on_my_drawn_print()
-#            print(f"""\
-#+------+
-#| aiko |
-#+------+
-#* ratings: A {ratings[1]}, B {ratings[2]}\
-#                  """)
+            on_my_drawn_print(ratings)
 
         # A が勝った
         elif result == 1:
@@ -116,13 +110,7 @@ if __name__ == "__main__":
             ratings[1] += answers["moving_rating"]
             ratings[2] -= answers["moving_rating"]
 
-            on_a_win_print(answers)
-#            print(f"""\
-#+-------+
-#| A win |
-#+-------+
-#* K: {K},  ratings: A {ratings[1]}, B {ratings[2]}\
-#                  """)
+            on_a_win_print(ratings, K, answers)
 
         # B が勝った
         elif result == 2:
@@ -140,13 +128,7 @@ if __name__ == "__main__":
             ratings[2] += answers["moving_rating"]
             ratings[1] -= answers["moving_rating"]
 
-            on_b_win_print(answers)
-#            print(f"""\
-#+-------+
-#| B win |
-#+-------+
-#* K: {K},  ratings: A {ratings[1]}, B {ratings[2]}\
-#                  """)
+            on_b_win_print(ratings, K, answers)
 
         else:
             print("Error")
