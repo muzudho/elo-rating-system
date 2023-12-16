@@ -82,7 +82,7 @@ def calculate_moving_rating_that_b_wins():
 
 if __name__ == "__main__":
 
-    def on_result_1(result):
+    def on_my_tournament_is_over(result):
 
         # あいこ
         if result == 0:
@@ -169,5 +169,5 @@ player,  win, rating
 
 
     main(on_gyanken=on_gyanken_1,
-         on_result=on_result_1,
+         on_tournament_is_over=on_my_tournament_is_over,
          on_end=on_end_1)

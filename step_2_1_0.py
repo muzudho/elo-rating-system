@@ -59,7 +59,7 @@ class GameRecord():
 
 if __name__ == "__main__":
 
-    def on_result_1(result):
+    def on_my_tournament_is_over(result):
 
         # あいこ
         if result == 0:
@@ -160,5 +160,5 @@ player_1_name, player_1_rating_before_game, player_2_name, player_2_rating_befor
 
 
     main(on_gyanken=on_gyanken_1,
-         on_result=on_result_1,
+         on_tournament_is_over=on_my_tournament_is_over,
          on_end=on_end_1)

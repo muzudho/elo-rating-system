@@ -14,7 +14,7 @@ def on_gyanken_1():
 
 def main(
         on_gyanken,
-        on_result,
+        on_tournament_is_over,
         on_end):
 
     print("Please input round number(1-100):")
@@ -26,14 +26,14 @@ def main(
 
         games[result_1] += 1
 
-        on_result(result_1)
+        on_tournament_is_over(result_1)
 
     on_end()
 
 
 if __name__ == "__main__":
 
-    def on_result_1(result):
+    def on_my_tournament_is_over(result):
         if result == 0:
             print("aiko")
         elif result == 1:
@@ -44,10 +44,10 @@ if __name__ == "__main__":
             print("Error")
 
 
-    def on_end_1():
+    def on_my_end():
         print(f"aiko: {games[0]}, A win: {games[1]}, B win: {games[2]}")
 
 
     main(on_gyanken=on_gyanken_1,
-         on_result=on_result_1,
-         on_end=on_end_1)
+         on_tournament_is_over=on_my_tournament_is_over,
+         on_end=on_my_end)
