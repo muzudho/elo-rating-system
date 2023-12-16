@@ -90,12 +90,12 @@ if __name__ == "__main__":
     # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
     total_games = [0,0,0]
 
-    # この対局でのレーティングについて
-    # [0] : 未使用
-    # [1] : プレイヤー１のレーティング
-    # [2] : プレイヤー２のレーティング
-    # 初期値：　R0 = 2000
-    ratings = [0, 2000, 2000]
+    ## この対局でのレーティングについて
+    ## [0] : 未使用
+    ## [1] : プレイヤー１のレーティング
+    ## [2] : プレイヤー２のレーティング
+    ## 初期値：　R0 = 2000
+    #obsoleted_ratings = [0, 2000, 2000]
 
     # Constant K
     K = 32
@@ -126,7 +126,7 @@ if __name__ == "__main__":
         # 大会結果の表示
         print_tournament_result(
             total_games=total_games,
-            ratings=ratings,
+            ratings=[0,0,0], # Obsoleted
             player_database=player_database)
 
         # 対局記録をファイルへ保存
@@ -168,58 +168,105 @@ if __name__ == "__main__":
             2: プレイヤー２の勝ち
         """
 
+        sente_player_record = list(filter(lambda item : item["id"] == sente_id, player_database))[0]
+        gote_player_record = list(filter(lambda item : item["id"] == gote_id, player_database))[0]
+
         # あいこ
         if result == 0:
-            # レーティングは動きません
+            # ２者のレーティングは動きません
 
             # 対局の記録
             game_records.append(GameRecord(
                 player_name_1="A",
                 player_name_2="B",
                 win_player=0,
-                player_1_rating_before_game=ratings[1],
-                player_2_rating_before_game=ratings[2],
+                player_1_rating_before_game = sente_player_record['rating'],
+                player_2_rating_before_game = gote_player_record['rating'],
                 moving_rating_after_game=0))
 
-            print_drawn(ratings)
+            # 表示
+            print_drawn(
+                ratings=[0, sente_player_record['rating'], gote_player_record['rating']])
 
         # A が勝った
         elif result == 1:
             # レーティングの変動
-            answers = calculate_moving_rating_that_a_wins(K, ratings)
+            answers = calculate_moving_rating_that_a_wins(
+                K=K,
+                ratings=[0, sente_player_record['rating'], gote_player_record['rating']])
 
             # 対局の記録
             game_records.append(GameRecord(
                 player_name_1="A",
                 player_name_2="B",
                 win_player=1,
-                player_1_rating_before_game=ratings[1],
-                player_2_rating_before_game=ratings[2],
+                player_1_rating_before_game = sente_player_record['rating'],
+                player_2_rating_before_game = gote_player_record['rating'],
                 moving_rating_after_game=answers["moving_rating"]))
 
-            ratings[1] += answers["moving_rating"]
-            ratings[2] -= answers["moving_rating"]
+            sente_player_record["rating"] += answers["moving_rating"]
+            gote_player_record["rating"] -= answers["moving_rating"]
 
-            print_a_win(ratings, K, answers)
+            # TODO アルゴリズム高速化できんか？
+            # データベースに反映
+            update_count = 0
+            for record in player_database:
+                if record['id'] == sente_player_record['id']:
+                    record['rating'] = sente_player_record["rating"]
+                    update_count += 1
+                    if 2 <= update_count:
+                        break
+
+                elif record['id'] == gote_player_record['id']:
+                    record['rating'] = gote_player_record["rating"]
+                    update_count += 1
+                    if 2 <= update_count:
+                        break
+
+            print_a_win(
+                ratings=[0, sente_player_record['rating'], gote_player_record['rating']],
+                K=K,
+                answers=answers)
 
         # B が勝った
         elif result == 2:
             # レーティングの変動
-            answers = calculate_moving_rating_that_b_wins(K, ratings)
+            answers = calculate_moving_rating_that_b_wins(
+                K=K,
+                ratings=[0, sente_player_record['rating'], gote_player_record['rating']])
 
             # 対局の記録
             game_records.append(GameRecord(
                 player_name_1="A",
                 player_name_2="B",
                 win_player=2,
-                player_1_rating_before_game=ratings[1],
-                player_2_rating_before_game=ratings[2],
+                player_1_rating_before_game = sente_player_record["rating"],
+                player_2_rating_before_game = gote_player_record["rating"],
                 moving_rating_after_game=answers["moving_rating"]))
 
-            ratings[2] += answers["moving_rating"]
-            ratings[1] -= answers["moving_rating"]
+            # TODO アルゴリズム高速化できんか？
+            # データベースに反映
+            update_count = 0
+            for record in player_database:
+                if record['id'] == sente_player_record['id']:
+                    record['rating'] = sente_player_record["rating"]
+                    update_count += 1
+                    if 2 <= update_count:
+                        break
 
-            print_b_win(ratings, K, answers)
+                elif record['id'] == gote_player_record['id']:
+                    record['rating'] = gote_player_record["rating"]
+                    update_count += 1
+                    if 2 <= update_count:
+                        break
+
+            gote_player_record["rating"] += answers["moving_rating"]
+            sente_player_record["rating"] -= answers["moving_rating"]
+
+            print_b_win(
+                ratings=[0, sente_player_record['rating'], gote_player_record['rating']],
+                K=K,
+                answers=answers)
 
         else:
             print("Error")

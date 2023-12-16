@@ -192,14 +192,14 @@ if __name__ == "__main__":
     # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
     total_games = [0,0,0]
 
-    # データベースから２人のプレイヤーを選び、そのレーティングをセットしたい。今回は行わない
-    #
-    # この対局でのレーティングについて
-    # [0] : 未使用
-    # [1] : プレイヤー１のレーティング
-    # [2] : プレイヤー２のレーティング
-    # 初期値：　R0 = 2000
-    obsoleted_ratings = [0, 2000, 2000]
+    ## データベースから２人のプレイヤーを選び、そのレーティングをセットしたい。今回は行わない
+    ##
+    ## この対局でのレーティングについて
+    ## [0] : 未使用
+    ## [1] : プレイヤー１のレーティング
+    ## [2] : プレイヤー２のレーティング
+    ## 初期値：　R0 = 2000
+    #obsoleted_ratings = [0, 2000, 2000]
 
     # Constant K
     K = 32
@@ -337,8 +337,8 @@ if __name__ == "__main__":
                 ratings=[0, sente_player_record['rating'], gote_player_record['rating']])
 
             # ２者のレーティングが動きます
-            sente_player_record["rating"] += answers["moving_rating"]
-            gote_player_record["rating"] -= answers["moving_rating"]
+            gote_player_record["rating"] += answers["moving_rating"]
+            sente_player_record["rating"] -= answers["moving_rating"]
 
             # TODO アルゴリズム高速化できんか？
             # データベースに反映
