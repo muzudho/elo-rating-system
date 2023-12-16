@@ -9,6 +9,7 @@ def main(
         on_tournament_executing,
         on_tournament_is_over,
         on_gyanken,
+        on_game_start,
         on_game_over):
     """プログラムのフレームワーク
     
@@ -24,7 +25,9 @@ def main(
         大会終了時
     on_gyanken:
         対局実行
-    on_game_over: func
+    on_game_start : func
+        対局開始時
+    on_game_over : func
         対局終了時
     """
 
@@ -123,6 +126,11 @@ if __name__ == "__main__":
         print(f"aiko: {total_games[0]}, A win: {total_games[1]}, B win: {total_games[2]}")
 
 
+    def on_my_game_start():
+        """対局開始時"""
+        pass
+
+
     def on_my_game_over(result):
         """対局終了時
 
@@ -152,5 +160,6 @@ if __name__ == "__main__":
         player_database = player_database,
         on_tournament_executing = execute_tournament,
         on_tournament_is_over = on_my_tournament_is_over,
+        on_game_start = on_my_game_start,
         on_gyanken = gyanken,
         on_game_over = on_my_game_over)

@@ -186,6 +186,11 @@ if __name__ == "__main__":
     K = 32
 
 
+    def on_my_game_start():
+        """対局開始時"""
+        pass
+
+
     def on_my_game_over(result):
         """対局終了時
 
@@ -256,12 +261,14 @@ if __name__ == "__main__":
 +-------+
 | start |
 +-------+
-* ratings: {two_player_records[0]['display_name']} {ratings[1]}, {two_player_records[1]['display_name']} {ratings[2]}""")
+* ratings: {two_player_records[0]['display_name']} {two_player_records[0]['rating']}, {two_player_records[1]['display_name']} {two_player_records[1]['rating']}\
+""")
 
     # プログラムの実行
     main(
         player_database=player_database,
         on_tournament_executing=execute_tournament,
+        on_tournament_is_over=on_my_tournament_is_over,
+        on_game_start = on_my_game_start,
         on_gyanken=gyanken,
-        on_game_over=on_my_game_over,
-        on_tournament_is_over=on_my_tournament_is_over)
+        on_game_over=on_my_game_over)

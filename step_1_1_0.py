@@ -14,6 +14,11 @@ if __name__ == "__main__":
     total_games = [0,0,0]
 
 
+    def on_my_game_start():
+        """対局開始時"""
+        pass
+
+
     def on_my_game_over(result):
         """対局終了時
 
@@ -50,6 +55,7 @@ if __name__ == "__main__":
     main(
         player_database = player_database,
         on_tournament_executing = execute_tournament,
+        on_tournament_is_over=on_my_tournament_is_over,
+        on_game_start = on_my_game_start,
         on_gyanken=gyanken,
-        on_game_over=on_my_game_over,
-        on_tournament_is_over=on_my_tournament_is_over)
+        on_game_over=on_my_game_over)
