@@ -221,7 +221,9 @@ if __name__ == "__main__":
             print_a_win(
                 ratings=[0, sente_player_record['rating'], gote_player_record['rating']],
                 K=K,
-                answers=answers)
+                answers=answers,
+                sente_player_record = sente_player_record,
+                gote_player_record = gote_player_record)
 
         # B が勝った
         elif result == 2:
@@ -261,7 +263,9 @@ if __name__ == "__main__":
             print_b_win(
                 ratings=[0, sente_player_record['rating'], gote_player_record['rating']],
                 K=K,
-                answers=answers)
+                answers=answers,
+                sente_player_record = sente_player_record,
+                gote_player_record = gote_player_record)
 
         else:
             print("Error")

@@ -16,12 +16,13 @@ def print_drawn(ratings):
 * ratings: A {ratings[1]}, B {ratings[2]}""")
 
 
-def print_a_win(ratings, K, answers):
+def print_a_win(ratings, K, answers, sente_player_record, gote_player_record):
     """A が勝ったときの表示"""
     print(f"""\
 +-------+
 | A win |
 +-------+
+* {sente_player_record['display_name']}<a> VS {gote_player_record['display_name']}<b>
 * b から見た a とのレーティング差: {answers["difference_b_to_a"]}
   {answers["difference_b_to_a_formula"]}
 * b から見た a に１勝するために必要な対局数: {answers["games_b_to_a"]}
@@ -34,7 +35,7 @@ def print_a_win(ratings, K, answers):
 """)
 
 
-def print_b_win(ratings, K, answers):
+def print_b_win(ratings, K, answers, sente_player_record, gote_player_record):
     """B が勝ったときの表示"""
 
     #print("answers:")
@@ -44,6 +45,7 @@ def print_b_win(ratings, K, answers):
 +-------+
 | B win |
 +-------+
+* {sente_player_record['display_name']}<a> VS {gote_player_record['display_name']}<b>
 * a から見た b とのレーティング差: {answers["difference_a_to_b"]}
   {answers["difference_a_to_b_formula"]}
 * a から見た b に１勝するために必要な対局数: {answers["games_a_to_b"]}
@@ -253,7 +255,9 @@ if __name__ == "__main__":
             print_a_win(
                 ratings=[0, sente_player_record['rating'], gote_player_record['rating']],
                 K=K,
-                answers=answers)
+                answers=answers,
+                sente_player_record = sente_player_record,
+                gote_player_record = gote_player_record)
 
         # B が勝った
         elif result == 2:
@@ -289,7 +293,9 @@ if __name__ == "__main__":
             print_b_win(
                 ratings=[0, sente_player_record['rating'], gote_player_record['rating']],
                 K=K,
-                answers=answers)
+                answers=answers,
+                sente_player_record = sente_player_record,
+                gote_player_record = gote_player_record)
 
         else:
             print("Error")
