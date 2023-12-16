@@ -3,8 +3,7 @@
 #
 import math
 
-from step_1_0 import on_my_tournament_executing, gyanken
-from step_1_1_0 import main
+from step_1_0 import main, on_my_tournament_executing, gyanken
 
 
 # A が勝った時のレーティングの移動量

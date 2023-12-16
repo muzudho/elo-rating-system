@@ -1,8 +1,7 @@
 #
 # python step_2_1_0.py
 #
-from step_1_0 import on_my_tournament_executing, gyanken
-from step_1_1_0 import main
+from step_1_0 import main, on_my_tournament_executing, gyanken
 from step_2_0 import calculate_moving_rating_that_a_wins,\
         calculate_moving_rating_that_b_wins
 
