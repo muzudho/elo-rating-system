@@ -132,7 +132,17 @@ if __name__ == "__main__":
 
     def on_my_tournament_is_start():
         """大会開始時"""
-        pass
+        # 開始
+        # プレイヤーのデータベースから、プレイヤーを選ぶ
+        two_player_records = random.sample(player_database, 2)
+        # ２プレイヤーのレーティングを表示したい
+
+        print(f"""\
++-------+
+| start |
++-------+
+* ratings: {two_player_records[0]['display_name']} {two_player_records[0]['rating']}, {two_player_records[1]['display_name']} {two_player_records[1]['rating']}\
+""")
 
 
     def on_my_tournament_is_over():
@@ -222,13 +232,6 @@ if __name__ == "__main__":
 
         total_games[result] += 1
 
-
-    # 開始
-    print(f"""\
-+-------+
-| start |
-+-------+
-* ratings: A {ratings[1]}, B {ratings[2]}""")
 
     # プログラムの実行
     main(

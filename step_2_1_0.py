@@ -1,6 +1,7 @@
 #
 # python step_2_1_0.py
 #
+import random
 from step_1_0 import main, execute_tournament, gyanken
 from step_2_0 import calculate_moving_rating_that_a_wins,\
         calculate_moving_rating_that_b_wins, print_drawn, print_a_win, print_b_win,\
@@ -66,8 +67,24 @@ player_1_name, player_1_rating_before_game, player_2_name, player_2_rating_befor
 
 if __name__ == "__main__":
 
-    # プレイヤーのデータベース（まだない）
-    player_database = {}
+    # プレイヤーのデータベース
+    # 操作のしやすさから、辞書ではなくリストを使う
+    player_database = [
+        {
+            # Id
+            "id" : "player_1",
+            # 表示名
+            "display_name" : "Alice",
+            # レーティング
+            "rating" : 2000,
+        },
+        {
+            # Id
+            "id" : "player_2",
+            "display_name" : "Bob",
+            "rating" : 2000,
+        },
+    ]
 
     # 集計（Totalization）
     # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
@@ -89,7 +106,17 @@ if __name__ == "__main__":
 
     def on_my_tournament_is_start():
         """大会開始時"""
-        pass
+        # 開始
+        # プレイヤーのデータベースから、プレイヤーを選ぶ
+        two_player_records = random.sample(player_database, 2)
+        # ２プレイヤーのレーティングを表示したい
+
+        print(f"""\
++-------+
+| start |
++-------+
+* ratings: {two_player_records[0]['display_name']} {two_player_records[0]['rating']}, {two_player_records[1]['display_name']} {two_player_records[1]['rating']}\
+""")
 
 
     def on_my_tournament_is_over():
@@ -179,13 +206,6 @@ if __name__ == "__main__":
 
         total_games[result] += 1
 
-
-    # 開始
-    print(f"""\
-+-------+
-| start |
-+-------+
-* ratings: A {ratings[1]}, B {ratings[2]}""")
 
     # プログラムの実行
     main(

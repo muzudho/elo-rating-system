@@ -34,12 +34,12 @@ def main(
         対局終了時
     """
 
+    # 大会開始時
+    on_tournament_is_start()
+
     # ラウンド数を入力
     print("Please input round number(1-100):")
     round = int(input())
-
-    # 大会開始時
-    on_tournament_is_start()
 
     # 大会の実行
     on_tournament_executing(
