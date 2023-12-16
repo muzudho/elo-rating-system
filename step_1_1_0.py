@@ -1,7 +1,7 @@
 #
 # python step_1_1_0.py
 #
-from step_1_0 import gyanken
+from step_1_0 import on_my_tournament_executing, gyanken
 
 
 def main(
@@ -32,38 +32,6 @@ def main(
         on_gyanken=on_gyanken,
         on_game_over=on_game_over,
         on_tournament_is_over=on_tournament_is_over)
-
-
-def on_my_tournament_executing(
-        round,
-        on_gyanken,
-        on_game_over,
-        on_tournament_is_over):
-    """大会実行のフレームワーク
-
-    集計は、大会の実行の外に出す
-
-    Parameters
-    ----------
-    round : int
-        対局数
-    on_tournament_is_over : func
-        大会終了時
-    on_game_over : func
-        対局終了時
-    on_gyanken : func
-        対局実行
-    """
-
-    for i in range(0, round):
-        # 対局実行
-        result_1 = on_gyanken()
-
-        # 結果
-        on_game_over(result_1)
-
-    # 大会終了時
-    on_tournament_is_over()
 
 
 if __name__ == "__main__":

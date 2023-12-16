@@ -40,8 +40,8 @@ def main(
 def on_my_tournament_executing(
         round,
         on_tournament_is_over,
-        on_game_over,
-        on_gyanken):
+        on_gyanken,
+        on_game_over):
     """大会実行のフレームワーク
 
     集計は、大会の実行の外に出す
