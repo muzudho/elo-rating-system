@@ -36,6 +36,39 @@ def main(
         on_gyanken)
 
 
+def on_my_tournament_executing(
+        round,
+        on_tournament_is_over,
+        on_game_over,
+        on_gyanken):
+    """大会実行のフレームワーク
+
+    集計は、大会の実行の外に出す
+
+    Parameters
+    ----------
+    round : int
+        対局数
+    on_tournament_is_over : func
+        大会終了時
+    on_game_over : func
+        対局終了時
+    on_gyanken : func
+        対局実行
+    """
+
+    for i in range(0, round):
+        # 対局実行
+        result = on_gyanken()
+
+        # 結果
+        on_game_over(result)
+
+
+    # 大会終了時
+    on_tournament_is_over()
+
+
 def gyanken():
     """ジャンケンをする。
 
@@ -49,39 +82,15 @@ def gyanken():
 
 if __name__ == "__main__":
 
-    # 集計
-    counts = [0,0,0]
+    # 集計（Totalization）
+    total_counts = [0,0,0]
 
 
-    def on_my_tournament_executing(
-            round,
-            on_tournament_is_over,
-            on_game_over,
-            on_gyanken):
-        """大会を実行する
+    def on_my_tournament_is_over():
+        """大会終了時"""
 
-        Parameters
-        ----------
-        round : int
-            対局数
-        on_tournament_is_over : func
-            大会終了時
-        on_game_over : func
-            対局終了時
-        on_gyanken : func
-            対局実行
-        """
-
-        for i in range(0, round):
-            # 対局実行
-            result = on_gyanken()
-
-            # 集計は、大会の実行の外に出す
-            on_game_over(result)
-
-
-        # 大会終了時
-        on_tournament_is_over()
+        # 集計の表示
+        print(f"aiko: {total_counts[0]}, A win: {total_counts[1]}, B win: {total_counts[2]}")
 
 
     def on_my_game_over(result):
@@ -103,12 +112,8 @@ if __name__ == "__main__":
         else:
             print("Error")
 
-        counts[result] += 1
-
-
-    def on_my_tournament_is_over():
-        """大会終了時"""
-        print(f"aiko: {counts[0]}, A win: {counts[1]}, B win: {counts[2]}")
+        # 集計
+        total_counts[result] += 1
 
 
     # プログラムの実行
