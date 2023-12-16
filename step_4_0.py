@@ -5,11 +5,11 @@
 #
 import random
 
-from step_1_0 import main, execute_tournament
+from step_1_0 import main
 from step_2_0 import calculate_moving_rating_that_a_wins,\
         calculate_moving_rating_that_b_wins, print_drawn, print_a_win, print_b_win
 from step_2_1_0 import GameRecord, save_game_records
-from step_3_0 import print_tournament_result
+from step_3_0 import print_tournament_result, execute_tournament
 
 
 def play_game(sente_id, gote_id, player_database):
