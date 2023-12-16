@@ -7,30 +7,6 @@ from step_1_0 import on_my_tournament_executing, gyanken
 from step_1_1_0 import main
 
 
-# １勝するために必要な対局数（暗記表の x ）を取得
-# 実数でも算出できるが、（1.0 以上の数になるよう数式を調整している前提で）整数にして返す
-def get_games_by_rating_difference(
-        rating_difference): # 暗記表の y
-    return math.floor(10 ** (rating_difference / 400))
-
-
-# レーティング差（暗記表の y ）を取得
-def get_rating_difference_by_games(
-        games_number): # 暗記表の x : 実数
-    #return math.floor(10 ** (games_number / 400))
-    return math.floor(400 * math.log10(games_number))
-
-
-# Win rate : 実数
-def get_win_rate_for_upper_rating(win_games):
-    return win_games / (win_games + 1)
-
-
-# Win rate : 実数
-def get_win_rate_for_lower_rating(win_games):
-    return 1 / (win_games + 1)
-
-
 # A が勝った時のレーティングの移動量
 def calculate_moving_rating_that_a_wins(K, ratings):
 
@@ -75,12 +51,41 @@ def calculate_moving_rating_that_b_wins(K, ratings):
     return result
 
 
+# １勝するために必要な対局数（暗記表の x ）を取得
+# 実数でも算出できるが、（1.0 以上の数になるよう数式を調整している前提で）整数にして返す
+def get_games_by_rating_difference(
+        rating_difference): # 暗記表の y
+    return math.floor(10 ** (rating_difference / 400))
+
+
+# レーティング差（暗記表の y ）を取得
+def get_rating_difference_by_games(
+        games_number): # 暗記表の x : 実数
+    #return math.floor(10 ** (games_number / 400))
+    return math.floor(400 * math.log10(games_number))
+
+
+# Win rate : 実数
+def get_win_rate_for_upper_rating(win_games):
+    return win_games / (win_games + 1)
+
+
+# Win rate : 実数
+def get_win_rate_for_lower_rating(win_games):
+    return 1 / (win_games + 1)
+
+
 if __name__ == "__main__":
 
-    # 集計。あいこの数, Aの勝利数, Bの勝利数
+    # 集計（Totalization）
+    # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
     total_games = [0,0,0]
 
-    # R0 = 2000
+    # この対局でのレーティングについて
+    # [0] : 未使用
+    # [1] : プレイヤー１のレーティング
+    # [2] : プレイヤー２のレーティング
+    # 初期値：　R0 = 2000
     ratings = [0, 2000, 2000]
 
     # Constant K
