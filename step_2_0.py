@@ -191,13 +191,16 @@ if __name__ == "__main__":
         # 開始
         # プレイヤーのデータベースから、プレイヤーを選ぶ
         two_player_records = random.sample(player_database, 2)
+        sente_player_record = two_player_records[0]
+        gote_player_record = two_player_records[1]
+
         # ２プレイヤーのレーティングを表示したい
 
         print(f"""\
 +-------+
 | start |
 +-------+
-* ratings: {two_player_records[0]['display_name']} {two_player_records[0]['rating']}, {two_player_records[1]['display_name']} {two_player_records[1]['rating']}\
+* ratings: {sente_player_record['display_name']} {sente_player_record['rating']}, {gote_player_record['display_name']} {gote_player_record['rating']}\
 """)
 
 
@@ -228,19 +231,35 @@ if __name__ == "__main__":
         gote_id : str
             後手プレイヤーのId
         """
+        print(f"[on_my_game_start] sente_id: {sente_id}, gote_id: {gote_id}")
+        sente_player_record = list(filter(lambda item : item["id"] == sente_id, player_database))[0]
+        gote_player_record = list(filter(lambda item : item["id"] == gote_id, player_database))[0]
+        print(f"[on_my_game_start] sente_player_record: {sente_player_record}")
+        print(f"[on_my_game_start] gote_player_record: {gote_player_record}")
 
 
     def on_my_game_over(
+            sente_id,
+            gote_id,
             result):
         """対局終了時
 
         Parameters
         ----------
+        sente_id : str
+            先手プレイヤーのId
+        gote_id : str
+            後手プレイヤーのId
         result : int
             0: あいこ
             1: プレイヤー１の勝ち
             2: プレイヤー２の勝ち
         """
+        print(f"[on_my_game_over] sente_id: {sente_id}, gote_id: {gote_id}")
+        sente_player_record = list(filter(lambda item : item["id"] == sente_id, player_database))[0]
+        gote_player_record = list(filter(lambda item : item["id"] == gote_id, player_database))[0]
+        print(f"[on_my_game_over] sente_player_record: {sente_player_record}")
+        print(f"[on_my_game_over] gote_player_record: {gote_player_record}")
 
         # あいこ
         if result == 0:
@@ -254,8 +273,8 @@ if __name__ == "__main__":
             answers = calculate_moving_rating_that_a_wins(K, ratings)
 
             # ２者のレーティングが動きます
-            ratings[1] += answers["moving_rating"]
-            ratings[2] -= answers["moving_rating"]
+            sente_player_record["rating"] += answers["moving_rating"]
+            gote_player_record["rating"] -= answers["moving_rating"]
 
             print_a_win(ratings, K, answers)
 
@@ -266,8 +285,8 @@ if __name__ == "__main__":
             answers = calculate_moving_rating_that_b_wins(K, ratings)
 
             # ２者のレーティングが動きます
-            ratings[2] += answers["moving_rating"]
-            ratings[1] -= answers["moving_rating"]
+            sente_player_record["rating"] += answers["moving_rating"]
+            gote_player_record["rating"] -= answers["moving_rating"]
 
             print_b_win(ratings, K, answers)
 
