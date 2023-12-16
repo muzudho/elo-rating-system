@@ -250,11 +250,14 @@ if __name__ == "__main__":
         gote_id : str
             後手プレイヤーのId
         """
+        # ここからグローバル変数を更新したかったが、
+        # ローカル変数を更新したことになってしまう
         #print(f"[on_my_game_start] sente_id: {sente_id}, gote_id: {gote_id}")
-        sente_player_record = list(filter(lambda item : item["id"] == sente_id, player_database))[0]
-        gote_player_record = list(filter(lambda item : item["id"] == gote_id, player_database))[0]
+        #sente_player_record = list(filter(lambda item : item["id"] == sente_id, player_database))[0]
+        #gote_player_record = list(filter(lambda item : item["id"] == gote_id, player_database))[0]
         #print(f"[on_my_game_start] sente_player_record: {sente_player_record}")
         #print(f"[on_my_game_start] gote_player_record: {gote_player_record}")
+        pass
 
 
     def on_my_game_over(
@@ -283,7 +286,8 @@ if __name__ == "__main__":
         # あいこ
         if result == 0:
             # ２者のレーティングは動きません
-            print_drawn(ratings)
+            print_drawn(
+                ratings=[0, sente_player_record['rating'], gote_player_record['rating']])
 
         # A が勝った
         elif result == 1:
@@ -314,7 +318,10 @@ if __name__ == "__main__":
             #print("player_database:")
             #print(player_database)
 
-            print_a_win(ratings, K, answers)
+            print_a_win(
+                ratings=[0, sente_player_record['rating'], gote_player_record['rating']],
+                K=K,
+                answers=answers)
 
         # B が勝った
         elif result == 2:
@@ -345,7 +352,10 @@ if __name__ == "__main__":
             #print("player_database:")
             #print(player_database)
 
-            print_b_win(ratings, K, answers)
+            print_b_win(
+                ratings=[0, sente_player_record['rating'], gote_player_record['rating']],
+                K=K,
+                answers=answers)
 
         else:
             print("Error")
