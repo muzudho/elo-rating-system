@@ -28,16 +28,10 @@ if __name__ == "__main__":
         print(f"aiko: {total_games[0]}, A win: {total_games[1]}, B win: {total_games[2]}")
 
 
-    def on_my_game_start():
-        """対局開始時"""
-        pass
-
-
-    def on_my_game_over(
+    def on_my_game_start(
             sente_id,
-            gote_id,
-            result):
-        """対局終了時
+            gote_id):
+        """対局開始時
 
         Parameters
         ----------
@@ -45,6 +39,16 @@ if __name__ == "__main__":
             先手プレイヤーのId
         gote_id : str
             後手プレイヤーのId
+        """
+        pass
+
+
+    def on_my_game_over(
+            result):
+        """対局終了時
+
+        Parameters
+        ----------
         result : int
             0: あいこ
             1: プレイヤー１の勝ち
