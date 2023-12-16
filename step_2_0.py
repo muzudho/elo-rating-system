@@ -23,9 +23,14 @@ def print_a_win(ratings, K, answers):
 | A win |
 +-------+
 * b から見た a とのレーティング差: {answers["difference_b_to_a"]}
+  {answers["difference_b_to_a_formula"]}
 * b から見た a に１勝するために必要な対局数: {answers["games_b_to_a"]}
+  {answers["games_b_to_a_formula"]}
 * b から見た a への勝率(Wba): {answers["Wba"]}
-* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}\
+  {answers["Wba_formula"]}
+* レーティングの移動: {answers['moving_rating']}
+  {answers['moving_rating_formula']}
+* K: {K}, ratings: A {ratings[1]}, B {ratings[2]}\
 """)
 
 
@@ -40,9 +45,14 @@ def print_b_win(ratings, K, answers):
 | B win |
 +-------+
 * a から見た b とのレーティング差: {answers["difference_a_to_b"]}
+  {answers["difference_a_to_b_formula"]}
 * a から見た b に１勝するために必要な対局数: {answers["games_a_to_b"]}
+  {answers["games_a_to_b_formula"]}
 * a から見た b への勝率(Wab): {answers["Wab"]}
-* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}\
+  {answers["Wab_formula"]}
+* レーティングの移動: {answers['moving_rating']}
+  {answers['moving_rating_formula']}
+* K: {K}, ratings: A {ratings[1]}, B {ratings[2]}\
 """)
 
 
