@@ -199,7 +199,7 @@ if __name__ == "__main__":
     # [1] : プレイヤー１のレーティング
     # [2] : プレイヤー２のレーティング
     # 初期値：　R0 = 2000
-    ratings = [0, 2000, 2000]
+    obsoleted_ratings = [0, 2000, 2000]
 
     # Constant K
     K = 32
@@ -229,13 +229,16 @@ if __name__ == "__main__":
         # データベースへの反映は、今回は行いません
 
         # 大会結果の表示
-        print_tournament_result(total_games, ratings, player_database)
+        print_tournament_result(
+            total_games=total_games,
+            ratings=[0,0,0],    # Obsoleted
+            player_database=player_database)
 
         # 対局記録の集計をファイルへ保存
         save_game_summary(
             path='data_output/step_2_0.csv',
             total_games=total_games,
-            ratings=ratings)
+            ratings=[0,0,0])    # Obsoleted
 
 
     def on_my_game_start(
@@ -293,7 +296,9 @@ if __name__ == "__main__":
         elif result == 1:
 
             # A が勝った時のレーティングの移動量
-            answers = calculate_moving_rating_that_a_wins(K, ratings)
+            answers = calculate_moving_rating_that_a_wins(
+                K=K,
+                ratings=[0, sente_player_record['rating'], gote_player_record['rating']])
 
             # ２者のレーティングが動きます
             sente_player_record["rating"] += answers["moving_rating"]
@@ -327,7 +332,9 @@ if __name__ == "__main__":
         elif result == 2:
 
             # B が勝った時のレーティングの移動量
-            answers = calculate_moving_rating_that_b_wins(K, ratings)
+            answers = calculate_moving_rating_that_b_wins(
+                K=K,
+                ratings=[0, sente_player_record['rating'], gote_player_record['rating']])
 
             # ２者のレーティングが動きます
             sente_player_record["rating"] += answers["moving_rating"]

@@ -49,6 +49,8 @@ def execute_tournament(
 
         # 対局実行
         result = on_gyanken(
+            sente_id=sente_id,
+            gote_id=gote_id,
             player_database=player_database)
 
         # 結果
