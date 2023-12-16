@@ -1,7 +1,7 @@
 #
 # python step_1_1_0.py
 #
-from step_1_0 import main, on_my_tournament_executing, gyanken
+from step_1_0 import main, execute_tournament, gyanken
 
 
 if __name__ == "__main__":
@@ -37,13 +37,15 @@ if __name__ == "__main__":
     def on_my_tournament_is_over():
         """大会終了時"""
 
+        # データベースへの反映は、今回は行いません
+
         # 集計の表示
         print(f"aiko: {total_games[0]}, A win: {total_games[1]}, B win: {total_games[2]}")
 
 
     # プログラムの実行
     main(
-        on_tournament_executing = on_my_tournament_executing,
+        on_tournament_executing = execute_tournament,
         on_gyanken=gyanken,
         on_game_over=on_my_game_over,
         on_tournament_is_over=on_my_tournament_is_over)

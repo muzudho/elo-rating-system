@@ -3,9 +3,9 @@
 #
 # プレイヤーのデータベースを連想配列で作る
 #
-from step_1_0 import main, on_my_tournament_executing, gyanken
+from step_1_0 import main, execute_tournament, gyanken
 from step_2_0 import calculate_moving_rating_that_a_wins,\
-        calculate_moving_rating_that_b_wins, on_my_drawn_print, on_a_win_print, on_b_win_print
+        calculate_moving_rating_that_b_wins, print_drawn, print_a_win, print_b_win
 from step_2_1_0 import GameRecord, save_game_records
 
 
@@ -35,7 +35,7 @@ player_database = [
 ]
 
 
-def on_my_tournament_executing(
+def execute_tournament(
         round,
         on_tournament_is_over,
         on_gyanken,
@@ -115,6 +115,8 @@ if __name__ == "__main__":
 
     def on_my_tournament_is_over():
 
+        # TODO データベースへの反映を、今回は行いたい
+
         # 大会結果の表示
         print_tournament_result(total_games, ratings, player_database)
 
@@ -148,7 +150,7 @@ if __name__ == "__main__":
                 player_2_rating_before_game=ratings[2],
                 moving_rating_after_game=0))
 
-            on_my_drawn_print(ratings)
+            print_drawn(ratings)
 
         # A が勝った
         elif result == 1:
@@ -167,7 +169,7 @@ if __name__ == "__main__":
             ratings[1] += answers["moving_rating"]
             ratings[2] -= answers["moving_rating"]
 
-            on_a_win_print(ratings, K, answers)
+            print_a_win(ratings, K, answers)
 
         # B が勝った
         elif result == 2:
@@ -186,7 +188,7 @@ if __name__ == "__main__":
             ratings[2] += answers["moving_rating"]
             ratings[1] -= answers["moving_rating"]
 
-            on_b_win_print(ratings, K, answers)
+            print_b_win(ratings, K, answers)
 
         else:
             print("Error")
@@ -203,7 +205,7 @@ if __name__ == "__main__":
 
     # プログラムの実行
     main(
-        on_tournament_executing=on_my_tournament_executing,
+        on_tournament_executing=execute_tournament,
         on_gyanken=gyanken,
         on_game_over=on_my_game_over,
         on_tournament_is_over=on_my_tournament_is_over)

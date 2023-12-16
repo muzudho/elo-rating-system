@@ -37,7 +37,7 @@ def main(
         on_game_over=on_game_over)
 
 
-def on_my_tournament_executing(
+def execute_tournament(
         round,
         on_tournament_is_over,
         on_gyanken,
@@ -83,30 +83,6 @@ def gyanken(player_1_id, player_2_id, player_database):
     return random.randint(0, 2)
 
 
-def on_my_game_over(result):
-    """対局終了時
-
-    Parameters
-    ----------
-    result : int
-        0: あいこ
-        1: プレイヤー１の勝ち
-        2: プレイヤー２の勝ち
-    """
-
-    if result == 0:
-        print("aiko")
-    elif result == 1:
-        print("A win")
-    elif result == 2:
-        print("B win")
-    else:
-        print("Error")
-
-    # 集計
-    total_games[result] += 1
-
-
 if __name__ == "__main__":
 
     # 集計（Totalization）
@@ -117,13 +93,39 @@ if __name__ == "__main__":
     def on_my_tournament_is_over():
         """大会終了時"""
 
+        # データベースへの反映は、今回は行いません
+
         # 集計の表示
         print(f"aiko: {total_games[0]}, A win: {total_games[1]}, B win: {total_games[2]}")
 
 
+    def on_my_game_over(result):
+        """対局終了時
+
+        Parameters
+        ----------
+        result : int
+            0: あいこ
+            1: プレイヤー１の勝ち
+            2: プレイヤー２の勝ち
+        """
+
+        if result == 0:
+            print("aiko")
+        elif result == 1:
+            print("A win")
+        elif result == 2:
+            print("B win")
+        else:
+            print("Error")
+
+        # 集計
+        total_games[result] += 1
+
+
     # プログラムの実行
     main(
-        on_tournament_executing = on_my_tournament_executing,
+        on_tournament_executing = execute_tournament,
         on_tournament_is_over = on_my_tournament_is_over,
         on_gyanken = gyanken,
         on_game_over = on_my_game_over)

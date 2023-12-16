@@ -3,7 +3,7 @@
 #
 import math
 
-from step_1_0 import main, on_my_tournament_executing, gyanken
+from step_1_0 import main, execute_tournament, gyanken
 
 
 def calculate_moving_rating_that_a_wins(K, ratings):
@@ -85,7 +85,7 @@ def get_win_rate_for_lower_rating(win_games):
     return 1 / (win_games + 1)
 
 
-def on_my_drawn_print(ratings):
+def print_drawn(ratings):
     """あいこの表示"""
     print(f"""\
 +------+
@@ -94,7 +94,7 @@ def on_my_drawn_print(ratings):
 * ratings: A {ratings[1]}, B {ratings[2]}""")
 
 
-def on_a_win_print(ratings, K, answers):
+def print_a_win(ratings, K, answers):
     """A が勝ったときの表示"""
     print(f"""\
 +-------+
@@ -107,7 +107,7 @@ def on_a_win_print(ratings, K, answers):
 """)
 
 
-def on_b_win_print(ratings, K, answers):
+def print_b_win(ratings, K, answers):
     """B が勝ったときの表示"""
     print(f"""\
 +-------+
@@ -176,7 +176,7 @@ if __name__ == "__main__":
         # あいこ
         if result == 0:
             # ２者のレーティングは動きません
-            on_my_drawn_print(ratings)
+            print_drawn(ratings)
 
         # A が勝った
         elif result == 1:
@@ -188,7 +188,7 @@ if __name__ == "__main__":
             ratings[1] += answers["moving_rating"]
             ratings[2] -= answers["moving_rating"]
 
-            on_a_win_print(ratings, K, answers)
+            print_a_win(ratings, K, answers)
 
         # B が勝った
         elif result == 2:
@@ -200,7 +200,7 @@ if __name__ == "__main__":
             ratings[2] += answers["moving_rating"]
             ratings[1] -= answers["moving_rating"]
 
-            on_b_win_print(ratings, K, answers)
+            print_b_win(ratings, K, answers)
 
         else:
             print("Error")
@@ -210,6 +210,8 @@ if __name__ == "__main__":
 
     def on_my_tournament_is_over():
         """大会終了時"""
+
+        # データベースへの反映は、今回は行いません
 
         # 大会結果の表示
         print_tournament_result(total_games, ratings)
@@ -225,12 +227,12 @@ if __name__ == "__main__":
     print(f"""\
 +-------+
 | start |
-+-------+\
++-------+
 * ratings: A {ratings[1]}, B {ratings[2]}""")
 
     # プログラムの実行
     main(
-        on_tournament_executing=on_my_tournament_executing,
+        on_tournament_executing=execute_tournament,
         on_gyanken=gyanken,
         on_game_over=on_my_game_over,
         on_tournament_is_over=on_my_tournament_is_over)
