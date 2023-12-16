@@ -6,8 +6,23 @@ import math
 from step_1_0 import main, on_my_tournament_executing, gyanken
 
 
-# A が勝った時のレーティングの移動量
+# 集計（Totalization）
+# [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
+total_games = [0,0,0]
+
+# この対局でのレーティングについて
+# [0] : 未使用
+# [1] : プレイヤー１のレーティング
+# [2] : プレイヤー２のレーティング
+# 初期値：　R0 = 2000
+ratings = [0, 2000, 2000]
+
+# Constant K
+K = 32
+
+
 def calculate_moving_rating_that_a_wins(K, ratings):
+    """A が勝った時のレーティングの移動量"""
 
     result = {}
 
@@ -28,8 +43,8 @@ def calculate_moving_rating_that_a_wins(K, ratings):
     return result
 
 
-# B が勝った時のレーティングの移動量
 def calculate_moving_rating_that_b_wins(K, ratings):
+    """B が勝った時のレーティングの移動量"""
 
     result = {}
 
@@ -50,45 +65,77 @@ def calculate_moving_rating_that_b_wins(K, ratings):
     return result
 
 
-# １勝するために必要な対局数（暗記表の x ）を取得
-# 実数でも算出できるが、（1.0 以上の数になるよう数式を調整している前提で）整数にして返す
 def get_games_by_rating_difference(
-        rating_difference): # 暗記表の y
+        rating_difference):
+    """１勝するために必要な対局数（暗記表の x ）を取得
+    実数でも算出できるが、（1.0 以上の数になるよう数式を調整している前提で）整数にして返す
+
+    Parameters
+    ----------
+    rating_difference : int
+        暗記表の y
+    """
     return math.floor(10 ** (rating_difference / 400))
 
 
-# レーティング差（暗記表の y ）を取得
 def get_rating_difference_by_games(
-        games_number): # 暗記表の x : 実数
-    #return math.floor(10 ** (games_number / 400))
+        games_number):
+    """レーティング差（暗記表の y ）を取得
+
+    Parameters
+    ----------
+    games_number : float
+        暗記表の x : 実数
+    """
     return math.floor(400 * math.log10(games_number))
 
 
-# Win rate : 実数
 def get_win_rate_for_upper_rating(win_games):
+    """Win rate : 実数"""
     return win_games / (win_games + 1)
 
 
-# Win rate : 実数
 def get_win_rate_for_lower_rating(win_games):
+    """Win rate : 実数"""
     return 1 / (win_games + 1)
 
 
+def on_my_drawn_print():
+    """あいこの表示"""
+    print(f"""\
++------+
+| aiko |
++------+\
+* ratings: A {ratings[1]}, B {ratings[2]}""")
+
+
+def on_a_win_print(answers):
+    """A が勝ったときの表示"""
+    print(f"""\
++-------+
+| A win |
++-------+
+* b から見た a とのレーティング差: {answers["difference_b_to_a"]}
+* b から見た a に１勝するために必要な対局数: {answers["games_b_to_a"]}
+* b から見た a への勝率(Wba): {answers["Wba"]}
+* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}\
+""")
+
+
+def on_b_win_print(answers):
+    """B が勝ったときの表示"""
+    print(f"""\
++-------+
+| B win |
++-------+
+* a から見た b とのレーティング差: {answers["difference_a_to_b"]}
+* a から見た b に１勝するために必要な対局数: {answers["games_a_to_b"]}
+* a から見た b への勝率(Wab): {answers["Wab"]}
+* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}\
+""")
+
+
 if __name__ == "__main__":
-
-    # 集計（Totalization）
-    # [0] あいこの数, [1] Aの勝利数, [2] Bの勝利数
-    total_games = [0,0,0]
-
-    # この対局でのレーティングについて
-    # [0] : 未使用
-    # [1] : プレイヤー１のレーティング
-    # [2] : プレイヤー２のレーティング
-    # 初期値：　R0 = 2000
-    ratings = [0, 2000, 2000]
-
-    # Constant K
-    K = 32
 
     def on_my_game_over(result):
         """対局終了時
@@ -104,11 +151,7 @@ if __name__ == "__main__":
         # あいこ
         if result == 0:
             # ２者のレーティングは動きません
-            print(f"""\
-+------+
-| aiko |
-+------+\
-* ratings: A {ratings[1]}, B {ratings[2]}""")
+            on_my_drawn_print()
 
         # A が勝った
         elif result == 1:
@@ -120,15 +163,7 @@ if __name__ == "__main__":
             ratings[1] += answers["moving_rating"]
             ratings[2] -= answers["moving_rating"]
 
-            print(f"""\
-+-------+
-| A win |
-+-------+
-* b から見た a とのレーティング差: {answers["difference_b_to_a"]}
-* b から見た a に１勝するために必要な対局数: {answers["games_b_to_a"]}
-* b から見た a への勝率(Wba): {answers["Wba"]}
-* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}\
-""")
+            on_a_win_print(answers)
 
         # B が勝った
         elif result == 2:
@@ -140,15 +175,7 @@ if __name__ == "__main__":
             ratings[2] += answers["moving_rating"]
             ratings[1] -= answers["moving_rating"]
 
-            print(f"""\
-+-------+
-| B win |
-+-------+
-* a から見た b とのレーティング差: {answers["difference_a_to_b"]}
-* a から見た b に１勝するために必要な対局数: {answers["games_a_to_b"]}
-* a から見た b への勝率(Wab): {answers["Wab"]}
-* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}\
-""")
+            on_b_win_print(answers)
 
         else:
             print("Error")

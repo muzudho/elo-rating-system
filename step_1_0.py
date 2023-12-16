@@ -59,8 +59,11 @@ def on_my_tournament_executing(
     """
 
     for i in range(0, round):
+        # プレイヤーのデータベース（まだない）
+        player_database = {}
+
         # 対局実行
-        result = on_gyanken("player_1", "player_2")
+        result = on_gyanken("player_1", "player_2", player_database)
 
         # 結果
         on_game_over(result)
@@ -69,7 +72,7 @@ def on_my_tournament_executing(
     on_tournament_is_over()
 
 
-def gyanken(player_1_id, player_2_id):
+def gyanken(player_1_id, player_2_id, player_database):
     """ジャンケンをする。
 
     Returns

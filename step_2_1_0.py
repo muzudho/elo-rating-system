@@ -3,7 +3,7 @@
 #
 from step_1_0 import main, on_my_tournament_executing, gyanken
 from step_2_0 import calculate_moving_rating_that_a_wins,\
-        calculate_moving_rating_that_b_wins
+        calculate_moving_rating_that_b_wins, on_my_drawn_print, on_a_win_print, on_b_win_print
 
 
 # 対局の記録
@@ -92,17 +92,18 @@ if __name__ == "__main__":
                 player_2_rating_before_game=ratings[2],
                 moving_rating_after_game=0))
 
-            print(f"""\
-+------+
-| aiko |
-+------+
-* ratings: A {ratings[1]}, B {ratings[2]}\
-                  """)
+            on_my_drawn_print()
+#            print(f"""\
+#+------+
+#| aiko |
+#+------+
+#* ratings: A {ratings[1]}, B {ratings[2]}\
+#                  """)
 
         # A が勝った
         elif result == 1:
             # レーティングの変動
-            result_2 = calculate_moving_rating_that_a_wins(K, ratings)
+            answers = calculate_moving_rating_that_a_wins(K, ratings)
 
             game_records.append(GameRecord(
                 player_name_1="A",
@@ -110,21 +111,23 @@ if __name__ == "__main__":
                 win_player=1,
                 player_1_rating_before_game=ratings[1],
                 player_2_rating_before_game=ratings[2],
-                moving_rating_after_game=result_2["moving_rating"]))
+                moving_rating_after_game=answers["moving_rating"]))
 
-            ratings[1] += result_2["moving_rating"]
-            ratings[2] -= result_2["moving_rating"]
-            print(f"""\
-+-------+
-| A win |
-+-------+
-* K: {K},  ratings: A {ratings[1]}, B {ratings[2]}\
-                  """)
+            ratings[1] += answers["moving_rating"]
+            ratings[2] -= answers["moving_rating"]
+
+            on_a_win_print(answers)
+#            print(f"""\
+#+-------+
+#| A win |
+#+-------+
+#* K: {K},  ratings: A {ratings[1]}, B {ratings[2]}\
+#                  """)
 
         # B が勝った
         elif result == 2:
             # レーティングの変動
-            result_2 = calculate_moving_rating_that_b_wins(K, ratings)
+            answers = calculate_moving_rating_that_b_wins(K, ratings)
 
             game_records.append(GameRecord(
                 player_name_1="A",
@@ -132,16 +135,18 @@ if __name__ == "__main__":
                 win_player=2,
                 player_1_rating_before_game=ratings[1],
                 player_2_rating_before_game=ratings[2],
-                moving_rating_after_game=result_2["moving_rating"]))
+                moving_rating_after_game=answers["moving_rating"]))
 
-            ratings[2] += result_2["moving_rating"]
-            ratings[1] -= result_2["moving_rating"]
-            print(f"""\
-+-------+
-| B win |
-+-------+
-* K: {K},  ratings: A {ratings[1]}, B {ratings[2]}\
-                  """)
+            ratings[2] += answers["moving_rating"]
+            ratings[1] -= answers["moving_rating"]
+
+            on_b_win_print(answers)
+#            print(f"""\
+#+-------+
+#| B win |
+#+-------+
+#* K: {K},  ratings: A {ratings[1]}, B {ratings[2]}\
+#                  """)
 
         else:
             print("Error")
