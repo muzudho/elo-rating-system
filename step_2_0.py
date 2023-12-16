@@ -7,10 +7,6 @@ from step_1_0 import on_my_tournament_executing, gyanken
 from step_1_1_0 import main
 
 
-# Constant K
-K = 32
-
-
 # １勝するために必要な対局数（暗記表の x ）を取得
 # 実数でも算出できるが、（1.0 以上の数になるよう数式を調整している前提で）整数にして返す
 def get_games_by_rating_difference(
@@ -86,6 +82,9 @@ if __name__ == "__main__":
 
     # R0 = 2000
     ratings = [0, 2000, 2000]
+
+    # Constant K
+    K = 32
 
     def on_my_game_over(result):
         """対局終了時
