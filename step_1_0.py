@@ -17,6 +17,7 @@ def gyanken():
 
 def main(
         on_tournament_executed,
+        on_tournament_is_over,
         on_game_over,
         on_gyanken):
     """プログラムのフレームワーク"""
@@ -29,11 +30,16 @@ def main(
     # 大会の実行
     on_tournament_executed(
         round,
+        on_tournament_is_over,
         on_game_over,
         on_gyanken)
 
 
 if __name__ == "__main__":
+
+    # 集計
+    counts = [0,0,0]
+
 
     def on_my_game_over(result):
         """対局終了時
@@ -54,9 +60,17 @@ if __name__ == "__main__":
         else:
             print("Error")
 
+        counts[result] += 1
+
+
+    def on_my_tournament_is_over():
+        """大会終了時"""
+        print(f"aiko: {counts[0]}, A win: {counts[1]}, B win: {counts[2]}")
+
 
     def on_my_tournament_executed(
             round,
+            on_tournament_is_over,
             on_game_over,
             on_gyanken):
         """大会を実行する
@@ -67,22 +81,20 @@ if __name__ == "__main__":
             対局数
         """
 
-        # 大会の実行と、集計は分けたい
-        # 集計
-        counts = [0,0,0]
-
         for i in range(0, round):
             result = on_gyanken()
+
+            # 集計は、大会の実行の外に出す
             on_game_over(result)
 
-            counts[result] += 1
 
-
-        print(f"aiko: {counts[0]}, A win: {counts[1]}, B win: {counts[2]}")
+        # 大会終了時
+        on_tournament_is_over()
 
 
     # プログラムの実行
     main(
         on_tournament_executed = on_my_tournament_executed,
+        on_tournament_is_over = on_my_tournament_is_over,
         on_game_over = on_my_game_over,
         on_gyanken = gyanken)
