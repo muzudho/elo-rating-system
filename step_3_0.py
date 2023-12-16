@@ -116,6 +116,24 @@ if __name__ == "__main__":
             "display_name" : "Charley",
             "rating" : 2000,
         },
+        {
+            # Id
+            "id" : "player_4",
+            "display_name" : "Dingo",
+            "rating" : 2000,
+        },
+        {
+            # Id
+            "id" : "player_5",
+            "display_name" : "Eric",
+            "rating" : 2000,
+        },
+        {
+            # Id
+            "id" : "player_6",
+            "display_name" : "Francisca",
+            "rating" : 2000,
+        },
     ]
 
     # 集計（Totalization）
