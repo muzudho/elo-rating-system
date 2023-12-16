@@ -11,6 +11,8 @@ def main(
         on_game_over):
     """プログラムのフレームワーク
     
+    集計は、このプログラムのフレームワークの外に出す
+
     Parameters
     ----------
     on_tournament_executing : func
@@ -27,7 +29,6 @@ def main(
     print("Please input round number(1-100):")
     round = int(input())
 
-    # TODO 大会と集計は分けたい
     # 大会の実行
     on_tournament_executing(
         round,
@@ -63,7 +64,6 @@ def on_my_tournament_executing(
 
         # 結果
         on_game_over(result)
-
 
     # 大会終了時
     on_tournament_is_over()
