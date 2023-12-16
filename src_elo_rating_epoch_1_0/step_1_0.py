@@ -20,7 +20,7 @@ def calculate_moving_rating_that_a_wins(K, ratings):
 
     # b から見た a とのレーティング差
     result["difference_b_to_a"] = ratings[1] - ratings[2]
-    result["difference_b_to_a_formula"] = f"{ratings[1]} - {ratings[2]}"
+    result["difference_b_to_a_formula"] = f"{ratings[1]}<a> - {ratings[2]}<b>"
 
     # b から見た a に１勝するために必要な対局数
     result["games_b_to_a"] = get_games_by_rating_difference(result["difference_b_to_a"])
@@ -56,7 +56,7 @@ def calculate_moving_rating_that_b_wins(K, ratings):
 
     # a から見た b とのレーティング差
     result["difference_a_to_b"] = ratings[2] - ratings[1]
-    result["difference_a_to_b_formula"] = f"{ratings[2]} - {ratings[1]}"
+    result["difference_a_to_b_formula"] = f"{ratings[2]}<b> - {ratings[1]}<a>"
 
     # a から見た b に１勝するために必要な対局数
     result["games_a_to_b"] = get_games_by_rating_difference(result["difference_a_to_b"])
