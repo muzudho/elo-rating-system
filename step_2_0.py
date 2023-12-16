@@ -120,12 +120,12 @@ def on_b_win_print(ratings, K, answers):
 """)
 
 
-def on_tournament_is_over_print(total_games, ratings):
+def print_tournament_result(total_games, ratings):
     """大会終了時の表示"""
     print(f"""\
-+--------+
-| result |
-+--------+
++-------------------+
+| tournament result |
++-------------------+
 * games:    aiko: {total_games[0]:4},  A win: {total_games[1]:4},  B win: {total_games[2]:4}
 * ratings:  aiko: {ratings[0]:4},  A win: {ratings[1]:4},  B win: {ratings[2]:4}\
 """)
@@ -211,8 +211,8 @@ if __name__ == "__main__":
     def on_my_tournament_is_over():
         """大会終了時"""
 
-        # 表示
-        on_tournament_is_over_print(total_games, ratings)
+        # 大会結果の表示
+        print_tournament_result(total_games, ratings)
 
         # 対局記録の集計をファイルへ保存
         save_game_summary(

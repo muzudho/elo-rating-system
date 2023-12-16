@@ -4,7 +4,7 @@
 from step_1_0 import main, on_my_tournament_executing, gyanken
 from step_2_0 import calculate_moving_rating_that_a_wins,\
         calculate_moving_rating_that_b_wins, on_my_drawn_print, on_a_win_print, on_b_win_print,\
-        on_tournament_is_over_print
+        print_tournament_result
 
 class GameRecord():
     """ゲームの記録"""
@@ -86,8 +86,8 @@ if __name__ == "__main__":
 
     def on_my_tournament_is_over():
 
-        # 表示
-        on_tournament_is_over_print(total_games, ratings)
+        # 大会結果の表示
+        print_tournament_result(total_games, ratings)
 
         # 対局記録をファイルへ保存
         save_game_records(

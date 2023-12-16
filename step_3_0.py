@@ -5,29 +5,34 @@
 #
 from step_1_0 import main, on_my_tournament_executing, gyanken
 from step_2_0 import calculate_moving_rating_that_a_wins,\
-        calculate_moving_rating_that_b_wins, on_my_drawn_print, on_a_win_print, on_b_win_print,\
-        on_tournament_is_over_print
-from step_2_1_0 import save_game_records
+        calculate_moving_rating_that_b_wins, on_my_drawn_print, on_a_win_print, on_b_win_print
+from step_2_1_0 import GameRecord, save_game_records
 
 
 # プレイヤーのデータベース
-player_database = {
-    # Id
-    "player_1" : {
+# 操作のしやすさから、辞書ではなくリストを使う
+player_database = [
+    {
+        # Id
+        "id" : "player_1",
         # 表示名
         "display_name" : "Alice",
         # レーティング
         "rating" : 2000,
     },
-    "player_2" : {
+    {
+        # Id
+        "id" : "player_2",
         "display_name" : "Bob",
         "rating" : 2000,
     },
-    "charley" : {
+    {
+        # Id
+        "id" : "player_3",
         "display_name" : "Charley",
         "rating" : 2000,
     },
-}
+]
 
 
 def on_my_tournament_executing(
@@ -62,6 +67,32 @@ def on_my_tournament_executing(
     on_tournament_is_over()
 
 
+def print_tournament_result(total_games, ratings, player_database):
+    """大会終了時の表示"""
+
+    # プレイヤーをレーティング順に並べて表示したい
+    # 各プレイヤーを配列へ入れる
+    player_ranking = []
+
+    for player_record in player_database:
+        player_ranking.append(player_record)
+
+    # レーティング順にソートする
+    # https://www.geeksforgeeks.org/ways-sort-list-dictionaries-values-python-using-lambda-function/
+    player_ranking = sorted(player_ranking, key=lambda item: item['rating'])
+
+    print(f"""\
++-------------------+
+| tournament result |
++-------------------+\
+""")
+    
+    for player_record in player_ranking:
+        print(f"""\
+* name: {player_record['display_name']:16}, rating: {player_record['rating']:4}\
+""")
+
+
 if __name__ == "__main__":
 
     # 集計（Totalization）
@@ -84,8 +115,8 @@ if __name__ == "__main__":
 
     def on_my_tournament_is_over():
 
-        # 表示
-        on_tournament_is_over_print(total_games, ratings)
+        # 大会結果の表示
+        print_tournament_result(total_games, ratings, player_database)
 
         # 対局記録をファイルへ保存
         save_game_records(
@@ -108,14 +139,14 @@ if __name__ == "__main__":
         if result == 0:
             # レーティングは動きません
 
-            ## 対局の記録
-            #game_records.append(GameRecord(
-            #    player_name_1="A",
-            #    player_name_2="B",
-            #    win_player=0,
-            #    player_1_rating_before_game=ratings[1],
-            #    player_2_rating_before_game=ratings[2],
-            #    moving_rating_after_game=0))
+            # 対局の記録
+            game_records.append(GameRecord(
+                player_name_1="A",
+                player_name_2="B",
+                win_player=0,
+                player_1_rating_before_game=ratings[1],
+                player_2_rating_before_game=ratings[2],
+                moving_rating_after_game=0))
 
             on_my_drawn_print(ratings)
 
@@ -125,13 +156,13 @@ if __name__ == "__main__":
             answers = calculate_moving_rating_that_a_wins(K, ratings)
 
             # 対局の記録
-            #game_records.append(GameRecord(
-            #    player_name_1="A",
-            #    player_name_2="B",
-            #    win_player=1,
-            #    player_1_rating_before_game=ratings[1],
-            #    player_2_rating_before_game=ratings[2],
-            #    moving_rating_after_game=answers["moving_rating"]))
+            game_records.append(GameRecord(
+                player_name_1="A",
+                player_name_2="B",
+                win_player=1,
+                player_1_rating_before_game=ratings[1],
+                player_2_rating_before_game=ratings[2],
+                moving_rating_after_game=answers["moving_rating"]))
 
             ratings[1] += answers["moving_rating"]
             ratings[2] -= answers["moving_rating"]
@@ -144,13 +175,13 @@ if __name__ == "__main__":
             answers = calculate_moving_rating_that_b_wins(K, ratings)
 
             # 対局の記録
-            #game_records.append(GameRecord(
-            #    player_name_1="A",
-            #    player_name_2="B",
-            #    win_player=2,
-            #    player_1_rating_before_game=ratings[1],
-            #    player_2_rating_before_game=ratings[2],
-            #    moving_rating_after_game=answers["moving_rating"]))
+            game_records.append(GameRecord(
+                player_name_1="A",
+                player_name_2="B",
+                win_player=2,
+                player_1_rating_before_game=ratings[1],
+                player_2_rating_before_game=ratings[2],
+                moving_rating_after_game=answers["moving_rating"]))
 
             ratings[2] += answers["moving_rating"]
             ratings[1] -= answers["moving_rating"]
