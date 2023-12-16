@@ -7,6 +7,7 @@ from step_1_0 import main, on_my_tournament_executing, gyanken
 from step_2_0 import calculate_moving_rating_that_a_wins,\
         calculate_moving_rating_that_b_wins, on_my_drawn_print, on_a_win_print, on_b_win_print,\
         on_tournament_is_over_print
+from step_2_1_0 import save_game_records
 
 
 # プレイヤーのデータベース
@@ -77,14 +78,19 @@ if __name__ == "__main__":
     # Constant K
     K = 32
 
+    # 対局の記録
+    game_records = []
+
 
     def on_my_tournament_is_over():
 
         # 表示
         on_tournament_is_over_print(total_games, ratings)
 
-        ## ファイルへ保存
-        #on_tournament_is_over_save(game_records)
+        # 対局記録をファイルへ保存
+        save_game_records(
+            path='data_output/step_3_0.csv',
+            game_records=game_records)
 
 
     def on_my_game_over(result):

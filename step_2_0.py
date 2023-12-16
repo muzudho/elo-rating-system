@@ -131,9 +131,9 @@ def on_tournament_is_over_print(total_games, ratings):
 """)
 
 
-def on_tournament_is_over_save(total_games, ratings):
-    """大会終了時の保存"""
-    with open('data_output/step_2_0.csv', mode='w') as f:
+def save_game_summary(path, total_games, ratings):
+    """大会記録の集計をファイルへ保存"""
+    with open(path, mode='w') as f:
 
         # 集計
         f.write(f"""\
@@ -214,8 +214,11 @@ if __name__ == "__main__":
         # 表示
         on_tournament_is_over_print(total_games, ratings)
 
-        # ファイルへ保存
-        on_tournament_is_over_save(total_games, ratings)
+        # 対局記録の集計をファイルへ保存
+        save_game_summary(
+            path='data_output/step_2_0.csv',
+            total_games=total_games,
+             ratings=ratings)
 
 
     # 開始
