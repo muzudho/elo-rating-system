@@ -3,8 +3,8 @@
 #
 import random
 
-# あいこの数, Aの勝利数, Bの勝利数
-games = [0,0,0]
+# 集計。あいこの数, Aの勝利数, Bの勝利数
+total_games = [0,0,0]
 
 
 # 0, 1, 2 のいずれかを返す
@@ -24,7 +24,7 @@ def main(
     for i in range(0, round):
         result_1 = on_gyanken()
 
-        games[result_1] += 1
+        total_games[result_1] += 1
 
         on_tournament_is_over(result_1)
 
@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
 
     def on_my_end():
-        print(f"aiko: {games[0]}, A win: {games[1]}, B win: {games[2]}")
+        print(f"aiko: {total_games[0]}, A win: {total_games[1]}, B win: {total_games[2]}")
 
 
     main(on_gyanken=on_gyanken_1,

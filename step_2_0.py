@@ -3,7 +3,7 @@
 #
 import math
 
-from step_1_1_0 import on_gyanken_1, games, main
+from step_1_1_0 import on_gyanken_1, total_games, main
 
 # R0 = 2000
 ratings = [0, 2000, 2000]
@@ -21,9 +21,9 @@ def get_games_by_rating_difference(
 
 # レーティング差（暗記表の y ）を取得
 def get_rating_difference_by_games(
-        games): # 暗記表の x : 実数
-    #return math.floor(10 ** (games / 400))
-    return math.floor(400 * math.log10(games))
+        games_number): # 暗記表の x : 実数
+    #return math.floor(10 ** (games_number / 400))
+    return math.floor(400 * math.log10(games_number))
 
 
 # Win rate : 実数
@@ -141,7 +141,7 @@ if __name__ == "__main__":
 +--------+
 | result |
 +--------+
-* games:    aiko: {games[0]:4},  A win: {games[1]:4},  B win: {games[2]:4}
+* games:    aiko: {total_games[0]:4},  A win: {total_games[1]:4},  B win: {total_games[2]:4}
 * ratings:  aiko: {ratings[0]:4},  A win: {ratings[1]:4},  B win: {ratings[2]:4}\
               """)
 
@@ -152,9 +152,9 @@ if __name__ == "__main__":
             f.write(f"""\
 player,  win, rating
 ------, ----, ------
-  aiko, {games[0]:4}, {ratings[0]:6}
-     A, {games[1]:4}, {ratings[1]:6}
-     B, {games[2]:4}, {ratings[2]:6}
+  aiko, {total_games[0]:4}, {ratings[0]:6}
+     A, {total_games[1]:4}, {ratings[1]:6}
+     B, {total_games[2]:4}, {ratings[2]:6}
 """)
 
 

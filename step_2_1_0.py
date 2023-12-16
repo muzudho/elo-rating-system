@@ -3,7 +3,7 @@
 #
 import math
 
-from step_1_1_0 import on_gyanken_1, games, main
+from step_1_1_0 import on_gyanken_1, total_games, main
 from step_2_0 import ratings, K, get_games_by_rating_difference, get_rating_difference_by_games,\
       get_win_rate_for_upper_rating, get_win_rate_for_lower_rating,calculate_moving_rating_that_a_wins,\
         calculate_moving_rating_that_b_wins
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 +--------+
 | result |
 +--------+
-* games:    aiko: {games[0]:4},  A win: {games[1]:4},  B win: {games[2]:4}
+* games:    aiko: {total_games[0]:4},  A win: {total_games[1]:4},  B win: {total_games[2]:4}
 * ratings:  aiko: {ratings[0]:4},  A win: {ratings[1]:4},  B win: {ratings[2]:4}\
               """)
 
