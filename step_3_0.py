@@ -36,11 +36,18 @@ def execute_tournament(
 
     for i in range(0, round):
 
-        # TODO プレイヤーのデータベースから、プレイヤーのIdを２つ選びたい
-        two_player_records = random.sample(player_database, 2)
+        for j in range(0, 100):
+            # プレイヤーのデータベースから、プレイヤーのIdを２つ選ぶ
+            two_player_records = random.sample(player_database, 2)
 
-        sente_id = two_player_records[0]["id"]
-        gote_id = two_player_records[1]["id"]
+            # 仮組み
+            sente_id = two_player_records[0]["id"]
+            gote_id = two_player_records[1]["id"]
+
+            # レーティングが 400 以上離れていたら、やりなおし。繰り返し回数を超えたら仮組みのまま決定
+            if 400 <= abs(two_player_records[0]["rating"] - two_player_records[1]["rating"]):
+                continue
+
 
         # 対局開始
         on_game_start(
@@ -150,16 +157,18 @@ if __name__ == "__main__":
     def on_my_tournament_is_start():
         """大会開始時"""
         # 開始
+
         # プレイヤーのデータベースから、プレイヤーを選ぶ
-        two_player_records = random.sample(player_database, 2)
+        #two_player_records = random.sample(player_database, 2)
         # ２プレイヤーのレーティングを表示したい
 
-        print(f"""\
-+-------+
-| start |
-+-------+
-* ratings: {two_player_records[0]['display_name']} {two_player_records[0]['rating']}, {two_player_records[1]['display_name']} {two_player_records[1]['rating']}\
-""")
+#        print(f"""\
+#+-------+
+#| start |
+#+-------+
+#* ratings: {two_player_records[0]['display_name']} {two_player_records[0]['rating']}, {two_player_records[1]['display_name']} {two_player_records[1]['rating']}\
+#""")
+        pass
 
 
     def on_my_tournament_is_over():

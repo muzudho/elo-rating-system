@@ -122,16 +122,19 @@ if __name__ == "__main__":
     def on_my_tournament_is_start():
         """大会開始時"""
         # 開始
-        # プレイヤーのデータベースから、プレイヤーを選ぶ
-        two_player_records = random.sample(player_database, 2)
-        # ２プレイヤーのレーティングを表示したい
 
-        print(f"""\
-+-------+
-| start |
-+-------+
-* ratings: {two_player_records[0]['display_name']} {two_player_records[0]['rating']}, {two_player_records[1]['display_name']} {two_player_records[1]['rating']}\
-""")
+#        # TODO 機能してない？
+#        # プレイヤーのデータベースから、プレイヤーを選ぶ
+#        two_player_records = random.sample(player_database, 2)
+#
+#        # ２プレイヤーのレーティングを表示したい
+#        print(f"""\
+#+-------+
+#| start |
+#+-------+
+#* ratings: {two_player_records[0]['display_name']} {two_player_records[0]['rating']}, {two_player_records[1]['display_name']} {two_player_records[1]['rating']}\
+#""")
+        pass
 
 
     def on_my_tournament_is_over():
