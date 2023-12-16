@@ -3,7 +3,8 @@
 #
 from step_1_0 import main, on_my_tournament_executing, gyanken
 from step_2_0 import calculate_moving_rating_that_a_wins,\
-        calculate_moving_rating_that_b_wins, on_my_drawn_print, on_a_win_print, on_b_win_print
+        calculate_moving_rating_that_b_wins, on_my_drawn_print, on_a_win_print, on_b_win_print,\
+        on_tournament_is_over_print
 
 
 # 対局の記録
@@ -54,6 +55,20 @@ class GameRecord():
         return self._moving_rating_after_game
 
 
+def on_tournament_is_over_save(game_records):
+    # ファイルへ保存
+    with open('data_output/step_2_1_0.csv', mode='w') as f:
+
+        f.write(f"""\
+player_1_name, player_1_rating_before_game, player_2_name, player_2_rating_before_game, win_player, moving_rating
+""")
+
+        for game_record in game_records:
+            f.write(f"""\
+{game_record.player_name_1}, {game_record.player_1_rating_before_game}, {game_record.player_name_2}, {game_record.player_2_rating_before_game}, {game_record.win_player}, {game_record.moving_rating_after_game}
+""")
+
+
 if __name__ == "__main__":
 
     # 集計（Totalization）
@@ -84,6 +99,8 @@ if __name__ == "__main__":
         # あいこ
         if result == 0:
             # レーティングは動きません
+
+            # 対局の記録
             game_records.append(GameRecord(
                 player_name_1="A",
                 player_name_2="B",
@@ -99,6 +116,7 @@ if __name__ == "__main__":
             # レーティングの変動
             answers = calculate_moving_rating_that_a_wins(K, ratings)
 
+            # 対局の記録
             game_records.append(GameRecord(
                 player_name_1="A",
                 player_name_2="B",
@@ -117,6 +135,7 @@ if __name__ == "__main__":
             # レーティングの変動
             answers = calculate_moving_rating_that_b_wins(K, ratings)
 
+            # 対局の記録
             game_records.append(GameRecord(
                 player_name_1="A",
                 player_name_2="B",
@@ -137,25 +156,12 @@ if __name__ == "__main__":
 
 
     def on_my_tournament_is_over():
-        print(f"""\
-+--------+
-| result |
-+--------+
-* games:    aiko: {total_games[0]:4},  A win: {total_games[1]:4},  B win: {total_games[2]:4}
-* ratings:  aiko: {ratings[0]:4},  A win: {ratings[1]:4},  B win: {ratings[2]:4}\
-              """)
+
+        # 表示
+        on_tournament_is_over_print(total_games, ratings)
 
         # ファイルへ保存
-        with open('data_output/step_2_1_0.csv', mode='w') as f:
-
-            f.write(f"""\
-player_1_name, player_1_rating_before_game, player_2_name, player_2_rating_before_game, win_player, moving_rating
-""")
-
-            for game_record in game_records:
-                f.write(f"""\
-{game_record.player_name_1}, {game_record.player_1_rating_before_game}, {game_record.player_name_2}, {game_record.player_2_rating_before_game}, {game_record.win_player}, {game_record.moving_rating_after_game}
-""")
+        on_tournament_is_over_save(game_records)
 
 
     # 開始

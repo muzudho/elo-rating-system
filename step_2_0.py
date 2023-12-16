@@ -120,6 +120,31 @@ def on_b_win_print(ratings, K, answers):
 """)
 
 
+def on_tournament_is_over_print(total_games, ratings):
+    """大会終了時の表示"""
+    print(f"""\
++--------+
+| result |
++--------+
+* games:    aiko: {total_games[0]:4},  A win: {total_games[1]:4},  B win: {total_games[2]:4}
+* ratings:  aiko: {ratings[0]:4},  A win: {ratings[1]:4},  B win: {ratings[2]:4}\
+""")
+
+
+def on_tournament_is_over_save(total_games, ratings):
+    """大会終了時の保存"""
+    with open('data_output/step_2_0.csv', mode='w') as f:
+
+        # 集計
+        f.write(f"""\
+player,  win, rating
+------, ----, ------
+  aiko, {total_games[0]:4}, {ratings[0]:6}
+     A, {total_games[1]:4}, {ratings[1]:6}
+     B, {total_games[2]:4}, {ratings[2]:6}
+""")
+
+
 if __name__ == "__main__":
 
     # 集計（Totalization）
@@ -186,25 +211,11 @@ if __name__ == "__main__":
     def on_my_tournament_is_over():
         """大会終了時"""
 
-        print(f"""\
-+--------+
-| result |
-+--------+
-* games:    aiko: {total_games[0]:4},  A win: {total_games[1]:4},  B win: {total_games[2]:4}
-* ratings:  aiko: {ratings[0]:4},  A win: {ratings[1]:4},  B win: {ratings[2]:4}\
-              """)
+        # 表示
+        on_tournament_is_over_print(total_games, ratings)
 
         # ファイルへ保存
-        with open('data_output/step_2_0.csv', mode='w') as f:
-
-            # 集計
-            f.write(f"""\
-player,  win, rating
-------, ----, ------
-  aiko, {total_games[0]:4}, {ratings[0]:6}
-     A, {total_games[1]:4}, {ratings[1]:6}
-     B, {total_games[2]:4}, {ratings[2]:6}
-""")
+        on_tournament_is_over_save(total_games, ratings)
 
 
     # 開始
