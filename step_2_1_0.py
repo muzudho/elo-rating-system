@@ -223,6 +223,7 @@ if __name__ == "__main__":
                     if 2 <= update_count:
                         break
 
+            # 表示
             print_a_win(
                 ratings=[0, sente_player_record['rating'], gote_player_record['rating']],
                 K=K,

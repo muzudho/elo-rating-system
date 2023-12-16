@@ -133,7 +133,7 @@ def print_tournament_result(total_games, ratings, player_database):
 
     # レーティング順にソートする
     # https://www.geeksforgeeks.org/ways-sort-list-dictionaries-values-python-using-lambda-function/
-    player_ranking = sorted(player_ranking, key=lambda item: item['rating'])
+    player_ranking = sorted(player_ranking, key=lambda item: item['rating'], reverse=True)
 
     print(f"""\
 +-------------------+
