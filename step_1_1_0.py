@@ -1,7 +1,7 @@
 #
 # python step_1_1_0.py
 #
-from step_1_0 import main, execute_tournament, gyanken
+from step_1_0 import main, execute_tournament, play_game
 
 
 if __name__ == "__main__":
@@ -80,5 +80,5 @@ if __name__ == "__main__":
         on_tournament_executing = execute_tournament,
         on_tournament_is_over=on_my_tournament_is_over,
         on_game_start = on_my_game_start,
-        on_gyanken=gyanken,
+        on_game_playing=play_game,
         on_game_over=on_my_game_over)

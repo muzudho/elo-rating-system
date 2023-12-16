@@ -10,7 +10,7 @@ def main(
         on_tournament_executing,
         on_tournament_is_over,
         on_game_start,
-        on_gyanken,
+        on_game_playing,
         on_game_over):
     """プログラムのフレームワーク
     
@@ -26,7 +26,7 @@ def main(
         大会のフレームワーク
     on_tournament_is_over: func
         大会終了時
-    on_gyanken:
+    on_game_playing:
         対局実行
     on_game_start : func
         対局開始時
@@ -46,7 +46,7 @@ def main(
         player_database=player_database,
         round=round,
         on_game_start=on_game_start,
-        on_gyanken=on_gyanken,
+        on_game_playing = on_game_playing,
         on_game_over=on_game_over)
 
     # 大会終了時
@@ -57,7 +57,7 @@ def execute_tournament(
         player_database,
         round,
         on_game_start,
-        on_gyanken,
+        on_game_playing,
         on_game_over):
     """大会実行のフレームワーク
 
@@ -73,7 +73,7 @@ def execute_tournament(
         大会終了時
     on_game_start : func
         対局開始時
-    on_gyanken : func
+    on_game_playing : func
         対局実行
     on_game_over : func
         対局終了時
@@ -91,7 +91,7 @@ def execute_tournament(
             gote_id=gote_id)
 
         # 対局実行
-        result = on_gyanken(
+        result = on_game_playing(
             sente_id=sente_id,
             gote_id=gote_id,
             player_database=player_database)
@@ -103,8 +103,8 @@ def execute_tournament(
             result=result)
 
 
-def gyanken(sente_id, gote_id, player_database):
-    """ジャンケンをする。
+def play_game(sente_id, gote_id, player_database):
+    """対局をする。
 
     Parameters
     ----------
@@ -200,5 +200,5 @@ if __name__ == "__main__":
         on_tournament_executing = execute_tournament,
         on_tournament_is_over = on_my_tournament_is_over,
         on_game_start = on_my_game_start,
-        on_gyanken = gyanken,
+        on_game_playing = play_game,
         on_game_over = on_my_game_over)

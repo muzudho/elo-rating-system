@@ -3,7 +3,7 @@
 #
 import random
 
-from step_1_0 import main, execute_tournament, gyanken
+from step_1_0 import main, execute_tournament, play_game
 from src_elo_rating_epoch_1_0.step_1_0 import calculate_moving_rating_that_a_wins, calculate_moving_rating_that_b_wins
 
 
@@ -294,5 +294,5 @@ if __name__ == "__main__":
         on_tournament_executing=execute_tournament,
         on_tournament_is_over=on_my_tournament_is_over,
         on_game_start = on_my_game_start,
-        on_gyanken=gyanken,
+        on_game_playing=play_game,
         on_game_over=on_my_game_over)
