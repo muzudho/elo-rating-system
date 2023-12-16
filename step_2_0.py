@@ -6,8 +6,6 @@ import math
 from step_1_0 import on_my_tournament_executing, gyanken
 from step_1_1_0 import main
 
-# R0 = 2000
-ratings = [0, 2000, 2000]
 
 # Constant K
 K = 32
@@ -38,7 +36,7 @@ def get_win_rate_for_lower_rating(win_games):
 
 
 # A が勝った時のレーティングの移動量
-def calculate_moving_rating_that_a_wins():
+def calculate_moving_rating_that_a_wins(ratings):
 
     result = {}
 
@@ -60,7 +58,7 @@ def calculate_moving_rating_that_a_wins():
 
 
 # B が勝った時のレーティングの移動量
-def calculate_moving_rating_that_b_wins():
+def calculate_moving_rating_that_b_wins(ratings):
 
     result = {}
 
@@ -86,6 +84,9 @@ if __name__ == "__main__":
     # 集計。あいこの数, Aの勝利数, Bの勝利数
     total_games = [0,0,0]
 
+    # R0 = 2000
+    ratings = [0, 2000, 2000]
+
     def on_my_game_over(result):
         """対局終了時
 
@@ -99,19 +100,22 @@ if __name__ == "__main__":
 
         # あいこ
         if result == 0:
-            print("""\
+            # ２者のレーティングは動きません
+            print(f"""\
 +------+
 | aiko |
 +------+\
-                  """)
-            # レーティングは動きません
-            print(f"* ratings: A {ratings[1]}, B {ratings[2]}")
+* ratings: A {ratings[1]}, B {ratings[2]}""")
 
         # A が勝った
         elif result == 1:
 
             # A が勝った時のレーティングの移動量
-            answers = calculate_moving_rating_that_a_wins()
+            answers = calculate_moving_rating_that_a_wins(ratings)
+
+            # ２者のレーティングが動きます
+            ratings[1] += answers["moving_rating"]
+            ratings[2] -= answers["moving_rating"]
 
             print(f"""\
 +-------+
@@ -119,18 +123,19 @@ if __name__ == "__main__":
 +-------+
 * b から見た a とのレーティング差: {answers["difference_b_to_a"]}
 * b から見た a に１勝するために必要な対局数: {answers["games_b_to_a"]}
-* b から見た a への勝率(Wba): {answers["Wba"]}\
+* b から見た a への勝率(Wba): {answers["Wba"]}
+* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}\
 """)
-
-            ratings[1] += answers["moving_rating"]
-            ratings[2] -= answers["moving_rating"]
-            print(f"* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}")
 
         # B が勝った
         elif result == 2:
 
             # B が勝った時のレーティングの移動量
-            answers = calculate_moving_rating_that_b_wins()
+            answers = calculate_moving_rating_that_b_wins(ratings)
+
+            # ２者のレーティングが動きます
+            ratings[2] += answers["moving_rating"]
+            ratings[1] -= answers["moving_rating"]
 
             print(f"""\
 +-------+
@@ -138,12 +143,9 @@ if __name__ == "__main__":
 +-------+
 * a から見た b とのレーティング差: {answers["difference_a_to_b"]}
 * a から見た b に１勝するために必要な対局数: {answers["games_a_to_b"]}
-* a から見た b への勝率(Wab): {answers["Wab"]}\
+* a から見た b への勝率(Wab): {answers["Wab"]}
+* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}\
 """)
-
-            ratings[2] += answers["moving_rating"]
-            ratings[1] -= answers["moving_rating"]
-            print(f"* K: {K},  moving_rating: {answers['moving_rating']},  ratings: A {ratings[1]}, B {ratings[2]}")
 
         else:
             print("Error")
@@ -176,16 +178,14 @@ player,  win, rating
 
 
     # 開始
-    print("""\
+    print(f"""\
 +-------+
 | start |
 +-------+\
-          """)
+* ratings: A {ratings[1]}, B {ratings[2]}""")
     
-    # レーティングは動きません
-    print(f"* ratings: A {ratings[1]}, B {ratings[2]}")
 
-
+    # プログラムの実行
     main(
         on_tournament_executing=on_my_tournament_executing,
         on_gyanken=gyanken,
